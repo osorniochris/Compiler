@@ -10,4 +10,4 @@ class Transition:
         if not isinstance(other, type(self)): 
             return NotImplemented
         else:
-            return self.symbol == other.symbol and self.destination_states == other.destination_states
+            return self.symbol == other.symbol and tuple(self.destination_states) == tuple(other.destination_states)

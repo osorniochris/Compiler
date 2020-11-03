@@ -13,8 +13,8 @@ class State:
         if not isinstance(other, type(self)): 
             return NotImplemented
         else:
-            return self.id == other.id and self.transitions == other.transitions and self.is_initial_state == other.is_initial_state and self.is_accept_state == other.is_accept_state and self.token == other.token
-
+            return self.id == other.id and tuple(self.transitions) == tuple(other.transitions) and self.is_initial_state == other.is_initial_state and self.is_accept_state == other.is_accept_state and self.token == other.token
+    
     def add_transition(self, transition):
         self.transitions.append(transition)
 

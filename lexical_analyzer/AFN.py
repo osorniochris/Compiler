@@ -1,7 +1,11 @@
 from State import State
 from Transition import Transition
+from Subset import Subset
+from AFD import AFD
 from queue import LifoQueue
 from graphviz import Digraph
+import tempfile
+import copy
 
 class AFN:
     def __init__(self, id, initial_state, alphabet, accept_states, states):
@@ -16,28 +20,31 @@ class AFN:
 
     def join_afn(self, afn, current_state_id, afn_id, token):
         new_states = set()
+        aux_self = copy.deepcopy(self)
+        aux_afn = copy.deepcopy(afn)
 
         initial_state = State(current_state_id+1, [], True, False, 0)
         final_state = State(current_state_id+2, [], False, True, token)
 
-        for a_s in self.states:
+        for a_s in aux_self.states:
             if a_s.is_accept_state:
-                a_s.add_transition(Transition(chr(400), final_state))
+                a_s.add_transition(Transition(chr(400), {final_state}))
                 a_s.is_accept_state = False
             if a_s.is_initial_state:
-                initial_state.add_transition(Transition(chr(400), a_s))
-                a_s.is_initial_state = False
-        for a_s in afn.states:
-            if a_s.is_accept_state:
-                a_s.add_transition(Transition(chr(400), final_state))
-                a_s.is_accept_state = False
-            if a_s.is_initial_state:
-                initial_state.add_transition(Transition(chr(400), a_s))
+                initial_state.add_transition(Transition(chr(400), {a_s}))
                 a_s.is_initial_state = False
         
-        new_alphabet = list(set(self.alphabet) | set(afn.alphabet))
-        new_states.union(self.states) 
-        new_states.union(afn.states)
+        for a_s in aux_afn.states:
+            if a_s.is_accept_state:
+                a_s.add_transition(Transition(chr(400), {final_state}))
+                a_s.is_accept_state = False
+            if a_s.is_initial_state:
+                initial_state.add_transition(Transition(chr(400), {a_s}))
+                a_s.is_initial_state = False
+        
+        new_alphabet = list(set(aux_self.alphabet) | set(aux_afn.alphabet))
+        new_states.update(aux_self.states) 
+        new_states.update(aux_afn.states)
         new_states.add(initial_state)
         new_states.add(final_state)
 
@@ -46,27 +53,27 @@ class AFN:
         return a
         
     def concatenate_afn(self, afn, afn_id, token):
-        
-        for s in self.states:
+        aux_self = copy.deepcopy(self)
+        afn_aux = copy.deepcopy(afn)
+        for s in aux_self.states:
             if s.is_accept_state:
-                for t in afn.initial_state.transitions:
+                for t in afn_aux.initial_state.transitions:
                     s.add_transition(t)
                 s.is_accept_state = False
                 s.token = 0
         
-        for s in afn.states:
-            if s.is_initial_state:
-                afn.states.remove(s)
         
-        for a_s in afn.accept_states:
+        afn_aux.states.remove(afn_aux.initial_state)
+        
+        for a_s in afn_aux.accept_states:
             a_s.token = token
         
-        new_alphabet = list(set(self.alphabet) | set(afn.alphabet))
+        new_alphabet = list(set(aux_self.alphabet) | set(afn_aux.alphabet))
         new_states = set()
-        new_states.union(self.states) 
-        new_states.union(afn.states)
+        new_states.update(aux_self.states) 
+        new_states.update(afn_aux.states)
         
-        a = AFN(afn_id, self.initial_state, new_alphabet, afn.accept_states, new_states)
+        a = AFN(afn_id, aux_self.initial_state, new_alphabet, afn_aux.accept_states, new_states)
 
         return a
 
@@ -86,7 +93,6 @@ class AFN:
 
         while not S.empty() :
             p = S.get()
-            print(p)
             R.add(p)
 
             for t in p.transitions:
@@ -103,7 +109,7 @@ class AFN:
         R = set()
 
         for s in states:
-            R.union(self.single_epsilon_closure(s))
+            R.update(self.single_epsilon_closure(s))
         
         return R
 
@@ -113,8 +119,49 @@ class AFN:
     def go_to(self, c, states):
         pass
 
-    def to_afd(self):
-        pass
+    def to_afd(self, id_afd, current_state_id):
+        R = set()
+        s_0 = Subset(0, self.epsilon_closure({self.initial_state}), False)
+        R.add(s_0)
+        i = 1
+
+        afd = AFD(id_afd, None, self.alphabet, {}, {})
+
+        for r in R:
+            if not r.checked:
+                for c in self.alphabet:
+                    states = self.go_to(c, self.states)
+
+                    if len(states) != 0:
+                        id_aux = i 
+                        exists = False
+                        for r_ in R:
+                            if r_.checked:
+                                if r_.states.issubset(states) and r_.states.issuperset(states):
+                                    id_aux == r_.id 
+                                    exists = True
+                        
+                        if not exists:
+                            sn = Subset(i, states, False)
+                            token = 0
+                        
+                            e = states.intersection(self.accept_states)
+                            if len(e) != 0:
+                                token = e.pop().token
+                        
+                            t = (r.id, i, c, token)
+                            afd.add(t)
+                            afd.add_to_table(t)
+                            i += 1
+                            R.add(sn)
+                        else:
+                            t = (r.id, id_aux, c, token)
+                            afd.add(t)
+                            afd.add_to_table(t)
+                            
+                r.checked = True
+
+        return afd
 
     def check_string(self, string):
         E = set()
@@ -132,7 +179,7 @@ class AFN:
         return True 
 
     def show(self):
-        f = Digraph('afn_' + str(self.id), filename='afn_' + str(self.id)+'.png')
+        f = Digraph('afn_' + str(self.id), filename='afn_' + str(self.id), format='png')
         f.attr(rankdir='LR', size='8,5')
         
         f.attr('node', shape='doublecircle')
@@ -143,34 +190,32 @@ class AFN:
         f.node(str(self.initial_state.id))
 
         for s in self.states:
-            if not s.is_initial_state and not s.is_accept_state:
-                for t in s.transitions:
-                    for d in t.destination_states:
-                        f.edge(str(s.id), str(d.id), label= str(t.symbol))
+            for t in s.transitions:
+                for d in t.destination_states:
+                    f.edge(str(s.id), str(d.id), label= str(t.symbol))
 
-        f.view()
+        f.view(tempfile.mktemp())
     
     @staticmethod
     def union_to_afd(afns, current_state_id, afn_id):
         
-        destination = set()
         new_alphabet = []
         new_accept_states = set()
         new_states = set()
+        afns_aux = copy.deepcopy(afns)
 
-        initial_state = State(current_state_id+1, [], True, False, 0)
+        i_s = State(current_state_id+1, [], True, False, 0)
 
-        for afn in afns:
+        for afn in afns_aux:
+            i_s.add_transition(Transition(chr(400), {afn.initial_state}))
             afn.initial_state.is_initial_state = False
-            destination.add(afn.initial_state)
 
-            new_alphabet = list(set(new_alphabet) | set(afn.alphabet)) 
-            new_accept_states.union(afn.accept_states)
-            new_states.union(afn.states)
+            new_alphabet.extend(afn.alphabet)
+            new_accept_states.update(afn.accept_states)
+            new_states.update(afn.states)
 
-        t = Transition(chr(400), destination)
-        initial_state.add_transition(t)
-
-        a = AFN(afn_id, initial_state, new_alphabet, new_accept_states, new_states)
+        new_states.update({i_s})
+        a = AFN(afn_id, i_s, new_alphabet, new_accept_states, new_states)
 
         return a
+        
