@@ -15,8 +15,14 @@ class AFN:
         self.accept_states = accept_states
         self.states = states
     
-    def create_basic(self, symbol):
-        pass
+    def create_basic(self, current_state_id, current_afn_id, token, symbol):
+	    initial_state = State(current_state_id+1, [], True, False, 0)
+	    accept_state = State(current_state_id+2, [], False, True, token)
+
+	    initial_state.add_transition(Transition(symbol, {accept_state}))
+
+	    a = AFN(current_afn_id, initial_state, {symbol}, {accept_state}, {initial_state, accept_state})
+	    return a
 
     def join_afn(self, afn, current_state_id, afn_id, token):
         new_states = set()
