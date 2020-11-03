@@ -83,14 +83,48 @@ class AFN:
 
         return a
 
-    def kleene_star(self):
-        pass
+    def kleene_star(self, afn_id):
+	new_states = set()
+	aux_self = copy.deepcopy(self)
+	
+	for t in aux_self.states:
+		if t.is_accept_state:
+			t.add_transition(Transition(chr(400), {aux_self.initial_state}))
+			aux_self.initial_state.add_transition(Transition(chr(400), {t.state}))
 
-    def kleene_plus(self):
-        pass
+	new_states.update(aux_self.states)
 
-    def optional_operator(self):
-        pass
+	a = AFN(afn_id, aux_self.initial_state, aux_self.alphabet, {aux_self.accept_state}, new_states)
+
+	return a
+
+    def kleene_plus(self, afn_id):
+	new_states = set()
+	aux_self = copy.deepcopy(self)
+	
+	for t in aux_self.states:
+		if t.is_accept_state:
+			t.add_transition(Transition(chr(400), {aux_self.initial_state}))
+
+	new_states.update(aux_self.states)
+
+	a = AFN(afn_id, aux_self.initial_state, aux_self.alphabet, {aux_self.accept_state}, new_states)
+
+	return a	
+
+def optional_operator(self, afn_id):
+	new_states = set()
+	aux_self = copy.deepcopy(self)
+
+	for t in aux_self:
+		if t.is_accept_state : 
+			aux_self.initial_state.add_transition(Transition(chr(400), {t.state}))
+
+	new_states.update(aux_self.states)
+	
+	a = AFN(afn_id, aux_self.initial_state, aux_self.alphabet, {aux_self.accept_state}, new_states)
+	return a		
+
 
     @staticmethod
     def single_epsilon_closure(state):
