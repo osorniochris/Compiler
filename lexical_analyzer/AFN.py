@@ -86,7 +86,8 @@ class AFN:
     def optional_operator(self):
         pass
 
-    def single_epsilon_closure(self, state):
+    @staticmethod
+    def single_epsilon_closure(state):
         S = LifoQueue()
         R = set()
         S.put(state)
@@ -102,64 +103,91 @@ class AFN:
         
         return R
 
-    def move_one(self, c, state):
-        pass
+    #Operacion Move: Recibe un Estado "E", un simbolo "c"
+    #                Regresa un Conjunto de Estados "R"
+    @staticmethod
+    def move_one(c, state):
+	    R = set()
+	    for t in state.transitions:
+		    if t.symbol == c:
+			    R.update(t.destination_states)
+	    return R	
 
-    def epsilon_closure(self, states):
+    @staticmethod
+    def epsilon_closure(states):
         R = set()
 
         for s in states:
-            R.update(self.single_epsilon_closure(s))
+            R.update(AFN.single_epsilon_closure(s))
         
         return R
-
-    def move(self, c, states):
-        pass
-
-    def go_to(self, c, states):
-        pass
+    
+    #Operacion MoveTo: Recibe un Conjunto de Estados "E", un simbolo "c"
+    #                  Regresa un Conjunto de Estados "R"
+    @staticmethod
+    def move(c, states):
+	    R = set()
+	    for e in states:
+		    R.update(AFN.move_one(c, e))
+	    return R	
+    
+    @staticmethod
+    #Operacion GoTo: Recibe un Conjunto de Estados "E", un simbolo "c"
+    #                Regresa un Conjunto de Estados "R"
+    def go_to(c, states):
+	    R = set()
+	    R = AFN.epsilon_closure(AFN.move(c, states))
+	    return R
 
     def to_afd(self, id_afd, current_state_id):
         R = set()
-        s_0 = Subset(0, self.epsilon_closure({self.initial_state}), False)
+        checked = []
+        aux_self = copy.deepcopy(self)
+
+        s_0 = Subset(0, AFN.epsilon_closure({aux_self.initial_state}))
         R.add(s_0)
         i = 1
 
-        afd = AFD(id_afd, None, self.alphabet, {}, {})
+        afd = AFD(id_afd, None, aux_self.alphabet, set(), set())
 
-        for r in R:
-            if not r.checked:
-                for c in self.alphabet:
-                    states = self.go_to(c, self.states)
+        while len(R) > 0:
+            r = R.pop()
+            if not r in checked:
+                for c in aux_self.alphabet:
+                    states = AFN.go_to(c, r.states)
 
                     if len(states) != 0:
                         id_aux = i 
                         exists = False
-                        for r_ in R:
-                            if r_.checked:
-                                if r_.states.issubset(states) and r_.states.issuperset(states):
-                                    id_aux == r_.id 
-                                    exists = True
+                        for r_ in checked:
+                            if r_.states.issubset(states) and r_.states.issuperset(states):
+                                id_aux == r_.id 
+                                exists = True
                         
                         if not exists:
-                            sn = Subset(i, states, False)
-                            token = 0
+                            sn = Subset(i, states)
+                            token_1 = 0
+                            token_2 = 0
                         
-                            e = states.intersection(self.accept_states)
+                            e = r.states.intersection(aux_self.accept_states)
                             if len(e) != 0:
-                                token = e.pop().token
+                                token_1 = e.pop().token
+                            
+                            d = sn.states.intersection(aux_self.accept_states)
+                            if len(d) != 0:
+                                token_2 = d.pop().token
                         
-                            t = (r.id, i, c, token)
+                            t = (r.id, i, c, token_1, token_2)
                             afd.add(t)
                             afd.add_to_table(t)
                             i += 1
                             R.add(sn)
                         else:
-                            t = (r.id, id_aux, c, token)
+                            t = (r.id, id_aux, c, token_1, token_2)
                             afd.add(t)
                             afd.add_to_table(t)
                             
-                r.checked = True
+                checked.append(r)
 
         return afd
 
@@ -169,7 +197,7 @@ class AFN:
         E = self.single_epsilon_closure(self.initial_state)
 
         for s in string:
-            E = self.go_to(E, s)
+            E = AFN.go_to(s, E)
             if len(E) == 0:
                 return False
         
@@ -210,7 +238,7 @@ class AFN:
             i_s.add_transition(Transition(chr(400), {afn.initial_state}))
             afn.initial_state.is_initial_state = False
 
-            new_alphabet.extend(afn.alphabet)
+            new_alphabet.extend([element for element in afn.alphabet if element not in new_alphabet])
             new_accept_states.update(afn.accept_states)
             new_states.update(afn.states)
 
@@ -218,4 +246,3 @@ class AFN:
         a = AFN(afn_id, i_s, new_alphabet, new_accept_states, new_states)
 
         return a
-        
