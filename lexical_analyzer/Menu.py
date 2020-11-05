@@ -1,9 +1,10 @@
-
-
+from AFN import AFN
+from AFD import AFD
 
 opc1 = 0
 afns = []
 afds = []
+stateNum = 0
 
 while opc1 != 10:
 
@@ -21,49 +22,97 @@ while opc1 != 10:
 	print("")
 	print("   10. Salir")
 
-	opc1 = input()
+	opc1 = int(input())
 
 	if opc1 == 1:
+		afn = None
+
 		print("Ingrese el caractér de transición")
 		char = input()
 
 		print("Ingrese un número para el identificador")
 		ident = input()
 
-		#Crear un afn con los datos introducidos
+		print("¿Tiene estado de aceptación?")
+		print("   1. Sí")
+		print("   2. No")
+		opc2 = int(input())
+
+		if opc2 == 1:
+			print("¿Cuál sería el token del estado de aceptación?")
+			token = input()
+
+			#Crear un afn con los datos introducidos
+			afn = AFN.create_basic(stateNum, ident, token, char)
+
+		else:
+			#Crear un afn con los datos introducidos
+			afn = AFN.create_basic(stateNum, ident, 0, char)
+
+		stateNum += 2
+
 		#Agregarlo a la lista de los afn
+		afns.append(afn)
 
 		print("AFN creado")
 		print("¿Le gustaría ver el AFN?")
 		print("   1. Sí")
 		print("   2. No")
-		opc2 = input()
+		opc2 = int(input())
 		
 		if opc2 == 1:
-			#Mostrar el afn
+			afn.show()
 
 
 	elif opc1 == 2:
 		if len(afns) != 0:
+			union = None
+
 			print("Seleccione el primer AFN a unir")
 			#Mostrar lista de afns
-			afn1 = input()
+			for i in range(0, len(afns)):
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+
+			afn1 = input() - 1
 
 			print("Seleccione el segundo AFN a unir")
 			#Mostrar lista de afns
-			afn2 = input()
+			for i in range(0, len(afns)):
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			# unirlos
+			afn2 = input() - 1
+
+			print("Ingrese un número para el identificador del AFN resultante")
+			ident = input()
+
+			print("¿El estado final de esta unión es un estado de aceptación?")
+			print("   1. Sí")
+			print("   2. No")
+			opc2 = int(input())
+
+			if opc2 == 1:
+				print("¿Cuál sería el token del estado de aceptación?")
+				token = input()
+
+				union = afns[afn1].join_afn(afns[afn2], stateNum, ident, token)
+
+			else:
+				union = afns[afn1].join_afn(afns[afn2], stateNum, ident, 0)
+
+
+			stateNum += 2
+
 			# agregar el afn resultante a la lista
+			afns.append(union)
 
 			print("AFNs unidos")
 			print("¿Le gustaría ver el AFN?")
 			print("   1. Sí")
 			print("   2. No")
-			opc2 = input()
+			opc2 = int(input())
 
 			if opc2 == 1:
-				#Mostrar el afn
+				union.show()
 
 		else:
 			print("Lo siento, aún no hay ningún AFN")
@@ -72,29 +121,54 @@ while opc1 != 10:
 		if len(afns) != 0:
 			print("Seleccione el primer AFN a concatenar")
 			#Mostrar lista de afns
-			afn1 = input()
+			for i in range(0, len(afns)):
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+
+			afn1 = input() - 1
 
 			print("Seleccione el segundo AFN a concatenar")
 			#Mostrar lista de afns
-			afn2 = input()
+			for i in range(0, len(afns)):
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			# concatenarlos
+			afn2 = input() - 1
+
+			print("Ingrese un número para el identificador del AFN resultante")
+			ident = input()
+
+			print("¿El estado final de esta concatenación es un estado de aceptación?")
+			print("   1. Sí")
+			print("   2. No")
+			opc2 = int(input())
+
+			if opc2 == 1:
+				print("¿Cuál sería el token del estado de aceptación?")
+				token = input()
+
+				concat = afns[afn1].concatenate_afn(afns[afn2], ident, token)
+
+			else:
+				concat = afns[afn1].concatenate_afn(afns[afn2], ident, 0)
+
 			# agregar el afn resultante a la lista
+			afns.append(concat)
 
 			print("AFNs concatenados")
 			print("¿Le gustaría ver el AFN?")
 			print("   1. Sí")
 			print("   2. No")
-			opc2 = input()
+			opc2 = int(input())
 
 			if opc2 == 1:
-				#Mostrar el afn
+				concat.show()
 
 		else:
 			print("Lo siento, aún no hay ningún AFN")
 
 	elif opc1 == 4:
 		if len(afns) != 0:
+			afn_cerr = None
+
 			print("¿Qué cerradura le gustaría aplicar?")
 			print("   1. Cerradura Transitiva")
 			print("   2. Cerradura de Kleene")
@@ -102,44 +176,101 @@ while opc1 != 10:
 
 			print("¿A qué AFN le gustaría aplicar la cerradura?")
 			#mostrar la lista de afns
-			afn = input()
+			for i in range(0, len(afns)):
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			if cerr == 1:
-				#aplicar cerradura transitiva
-				# agregar el afn resultante a la lista
-			elif cerr == 2:
-				#aplicar cerradura Kleene 
-				# agregar el afn resultante a la lista
+			afn = input() - 1
+
+			print("Ingrese un número para el identificador del AFN resultante")
+			ident = input()
+
+			print("¿El estado final de esta concatenación es un estado de aceptación?")
+			print("   1. Sí")
+			print("   2. No")
+			opc2 = int(input())
+
+			if opc2 == 1:
+				print("¿Cuál sería el token del estado de aceptación?")
+				token = input()
+
+				if cerr == 1:
+					#aplicar cerradura transitiva
+					afn_cerr = afns[afn].kleene_plus(ident)
+
+				elif cerr == 2:
+					#aplicar cerradura Kleene 
+					afn_cerr = afns[afn].kleene_star(ident)
+
+			else:
+				if cerr == 1:
+					#aplicar cerradura transitiva
+					afn_cerr = afns[afn].kleene_plus(ident)
+
+				elif cerr == 2:
+					#aplicar cerradura Kleene 
+					afn_cerr = afns[afn].kleene_star(ident)
+
+
+			# agregar el afn resultante a la lista
+			afns.append(afn_cerr)
+
+			stateNum += 2
 
 			print("Cerradura aplicada")
 			print("¿Le gustaría ver el AFN?")
 			print("   1. Sí")
 			print("   2. No")
-			opc2 = input()
+			opc2 = int(input())
 
 			if opc2 == 1:
-				#Mostrar el afn
+				afn_cerr.show()
 
 		else:
 			print("Lo siento, aún no hay ningún AFN")
 
 	elif opc1 == 5:
 		if len(afns) != 0:
+			afn_opc = None
+
 			print("¿A qué AFN le gustaría aplicar el operador?")
 			#mostrar la lista de afns
-			afn = input()
+			for i in range(0, len(afns)):
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			#aplicar el operador opcional
+			afn = input() - 1
+
+			print("Ingrese un número para el identificador del AFN resultante")
+			ident = input()
+
+			print("¿El estado final de esta concatenación es un estado de aceptación?")
+			print("   1. Sí")
+			print("   2. No")
+			opc2 = int(input())
+
+			if opc2 == 1:
+				print("¿Cuál sería el token del estado de aceptación?")
+				token = input()
+
+				#aplicar el operador opcional
+				afn_opc = afns[afn].optional_operator(ident)
+
+			else:
+				#aplicar el operador opcional
+				afn_opc = afns[afn].optional_operator(ident)
+
 			# agregar el afn resultante a la lista
+			afns.append(afn_opc)
 
-			print("Cerradura aplicada")
+			stateNum += 2
+
+			print("Operador aplicado")
 			print("¿Le gustaría ver el AFN?")
 			print("   1. Sí")
 			print("   2. No")
-			opc2 = input()
+			opc2 = int(input())
 
 			if opc2 == 1:
-				#Mostrar el afn
+				afn_opc.show()
 
 		else:
 			print("Lo siento, aún no hay ningún AFN")
@@ -147,31 +278,48 @@ while opc1 != 10:
 	elif opc1 == 6:
 		if len(afns) != 0:
 			afnstojoin = []
+			union = None
 
 			print("Elija uno de los AFN para el analizador Léxico")
 			#mostrar la lista de afns
-			afn = input()
-			afnstojoin.add(afn)
+			for i in range(0, len(afns)):
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			while afn != len(afns):
+			afn = input() - 1
+			afnstojoin.append(afns[afn])
+
+			while afn != (len(afns) + 1):
 				print("¿Cuál otro?")
 				#mostrar la lista de afns
-				print("   " + str(len(afns)) + ". Ningún otro")
+				for i in range(0, len(afns)):
+					print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-				afn = input()
-				afnstojoin.add(afn)
+				print("   " + str(len(afns) + 1) + ". Ningún otro")
+
+				afn = input() - 1
+
+				if afn != (len(afns) + 1):
+					afnstojoin.append(afns[afn])
+
+			print("Ingrese un número para el identificador del AFN resultante")
+			ident = input()
 
 			#unir los afns
+			union = AFN.union_to_afd(afnstojoin, stateNum, ident)
+
 			# agregar el afn resultante a la lista
+			afns.append(union)
+
+			stateNum += 1
 
 			print("AFNs unidos")
 			print("¿Le gustaría ver el AFN resultante?")
 			print("   1. Sí")
 			print("   2. No")
-			opc2 = input()
+			opc2 = int(input())
 
 			if opc2 == 1:
-				#Mostrar el afn
+				union.show()
 
 		else:
 			print("Lo siento, aún no hay ningún AFN")
@@ -180,19 +328,28 @@ while opc1 != 10:
 		if len(afns) != 0:
 			print("¿Qué AFN le gustaría convertir?")
 			#mostrar la lista de afns
-			afn = input()
+			for i in range(0, len(afns)):
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+
+			afn = input() - 1
+
+			print("Ingrese un número para el identificador del AFD resultante")
+			ident = input()
 
 			# convertir afn
+			afd = afns[afn].to_afd(ident, stateNum)
+
 			# agregar el afd resultante a la lista
+			afds.append(afd)
 
 			print("AFD creado")
 			print("¿Le gustaría ver el AFD?")
 			print("   1. Sí")
 			print("   2. No")
-			opc2 = input()
+			opc2 = int(input())
 
 			if opc2 == 1:
-				#Mostrar el afn
+				afd.show()
 
 		else:
 			print("Lo siento, aún no hay ningún AFN")
@@ -200,34 +357,41 @@ while opc1 != 10:
 	elif opc1 == 8:
 		if len(afns) != 0:
 			print("Introduzca la cadena que quiera validar:")
-			#mostrar la lista de afns
 			cadena = input()
 
 			print("¿Con qué autómata quieres validarla?")
-			#mostrar la lista de afns y afds
+			#mostrar la lista de afns
+			for i in range(0, len(afns)):
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+
+			for i in range(0, len(afds)):
+				print("   " + str(i + 1 + len(afns)) + ". AFD ID: " + str(afds[i].id))
+
+			af = input() - 1
 
 			# validar cadena
 			# dar veredicto de cadena
 
-
-			print("AFD creado")
-			print("¿Le gustaría ver el AFD?")
-			print("   1. Sí")
-			print("   2. No")
-			opc2 = input()
-
-			if opc2 == 1:
-				#Mostrar el afn
-
 		else:
-			print("Lo siento, aún no hay ningún AFN")
+			print("Lo siento, aún no hay ningún AFN para validar una cadena")
 
 	elif opc1 == 9:
 		if len(afns) != 0:
 			print("¿Qué autómata quieres ver?")
 			#mostrar la lista de afns y afds
+			for i in range(0, len(afns)):
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			#Mostrar el afn
+			for i in range(0, len(afds)):
+				print("   " + str(i + 1 + len(afns)) + ". AFD ID: " + str(afds[i].id))
+
+			af = input() - 1
+
+			#Mostrar el afn o afd
+			if af < len(afns):
+				afns[af].show()
+			else:
+				afds[af - len(afns)].show()
 
 		else:
 			print("Lo siento, aún no hay ningún AFN")
