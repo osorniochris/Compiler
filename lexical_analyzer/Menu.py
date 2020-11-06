@@ -73,14 +73,14 @@ while opc1 != 10:
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			afn1 = input() - 1
+			afn1 = int(input()) - 1
 
 			print("Seleccione el segundo AFN a unir")
 			#Mostrar lista de afns
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			afn2 = input() - 1
+			afn2 = int(input()) - 1
 
 			print("Ingrese un número para el identificador del AFN resultante")
 			ident = input()
@@ -124,14 +124,14 @@ while opc1 != 10:
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			afn1 = input() - 1
+			afn1 = int(input()) - 1
 
 			print("Seleccione el segundo AFN a concatenar")
 			#Mostrar lista de afns
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			afn2 = input() - 1
+			afn2 = int(input()) - 1
 
 			print("Ingrese un número para el identificador del AFN resultante")
 			ident = input()
@@ -172,14 +172,14 @@ while opc1 != 10:
 			print("¿Qué cerradura le gustaría aplicar?")
 			print("   1. Cerradura Transitiva")
 			print("   2. Cerradura de Kleene")
-			cerr = input()
+			cerr = int(input())
 
 			print("¿A qué AFN le gustaría aplicar la cerradura?")
 			#mostrar la lista de afns
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			afn = input() - 1
+			afn = int(input()) - 1
 
 			print("Ingrese un número para el identificador del AFN resultante")
 			ident = input()
@@ -237,7 +237,7 @@ while opc1 != 10:
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			afn = input() - 1
+			afn = int(input()) - 1
 
 			print("Ingrese un número para el identificador del AFN resultante")
 			ident = input()
@@ -285,7 +285,7 @@ while opc1 != 10:
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			afn = input() - 1
+			afn = int(input()) - 1
 			afnstojoin.append(afns[afn])
 
 			while afn != (len(afns) + 1):
@@ -296,7 +296,7 @@ while opc1 != 10:
 
 				print("   " + str(len(afns) + 1) + ". Ningún otro")
 
-				afn = input() - 1
+				afn = int(input()) - 1
 
 				if afn != (len(afns) + 1):
 					afnstojoin.append(afns[afn])
@@ -331,7 +331,7 @@ while opc1 != 10:
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
 
-			afn = input() - 1
+			afn = int(input()) - 1
 
 			print("Ingrese un número para el identificador del AFD resultante")
 			ident = input()
@@ -367,7 +367,7 @@ while opc1 != 10:
 			for i in range(0, len(afds)):
 				print("   " + str(i + 1 + len(afns)) + ". AFD ID: " + str(afds[i].id))
 
-			af = input() - 1
+			af = int(input()) - 1
 
 			# validar cadena
 			# dar veredicto de cadena
@@ -385,7 +385,7 @@ while opc1 != 10:
 			for i in range(0, len(afds)):
 				print("   " + str(i + 1 + len(afns)) + ". AFD ID: " + str(afds[i].id))
 
-			af = input() - 1
+			af = int(input()) - 1
 
 			#Mostrar el afn o afd
 			if af < len(afns):
