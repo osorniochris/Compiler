@@ -85,52 +85,85 @@ class AFN:
         return a
 
     def kleene_star(self, afn_id, current_state_id, token):
-        new_initial_state = State(current_state_id+1, [], True, False, 0)
-        new_final_state = State(current_state_id+2,[], False, True, token)
-        
+    	#Se define el set donde iran los nuevos estados
         new_states = set()
+    	#Se crea una copia exacta del AFN seleccionado
         aux_self = copy.deepcopy(self)
+
+    	#Se crea el nuevo estado inicial
+        new_initial_state = State(current_state_id+1, [], True, False, 0)
+        #Se crea el nuevo estado de aceptacion
+        new_accept_state = State(current_state_id+2, [], False, True, token)
         
         for t in aux_self.states:
-            if t.is_accept_state:
-                t.add_transition(chr(400), {aux_self.initial_state})
-                new_initial_state.add_transition(Transition(chr(400), {aux_self.initial_state}))
-                new_initial_state.add_transition(Transition(chr(400), {new_final_state}))
-                t.add_transition(chr(400), {new_final_state})
-                t.is_accept_state = False
-                aux_self.initial_state.is_initial_state = False
-            
+        	#Si el estado actual es el estado de aceptacion del AFN
+        	if t.is_accept_state:
+        		#Se añade una transicion del mismo al estado inicial
+        		t.add_transition(Transition(chr(400), {aux_self.initial_state}))
+
+        for t in aux_self.states:
+        	#Si el estado actual es el estado de aceptacion del AFN
+        	if t.is_accept_state:
+        		#Se añade una transicion del mismo al nuevo estado de aceptacion
+        		t.add_transition(Transition(chr(400), {new_accept_state}))
+        		#El estado actual ya no será de aceptación
+        		t.is_accept_state = False
+        	#Si el estado actual es el estado inicial del AFN
+        	if t.is_initial_state:
+        		#El nuevo estado inicial hara una transicion hacia el estado actual
+        		new_initial_state.add_transition(Transition(chr(400), {t}))
+        		#El estado actual ya no sera de aceptacion
+        		t.is_initial_state = False
+        		
+
+        new_initial_state.add_transition(Transition(chr(400), {new_accept_state}))
+
         new_states.update(aux_self.states)
         new_states.add(new_initial_state)
-        new_states.add(new_final_state)
-        
-        a = AFN(afn_id, new_initial_state, self.alphabet, {new_final_state}, new_states)
-        
-        return a
+        new_states.add(new_accept_state)
+
+        a = AFN(afn_id, new_initial_state, aux_self.alphabet, {new_accept_state}, new_states)
+        return a				
 
     def kleene_plus(self, afn_id, current_state_id, token):
-        new_initial_state = State(current_state_id+1, [], True, False, 0)
-        new_final_state = State(current_state_id+2,[], False, True, token)
-        
+    	#Se define el set donde iran los nuevos estados
         new_states = set()
+    	#Se crea una copia exacta del AFN seleccionado
         aux_self = copy.deepcopy(self)
+
+    	#Se crea el nuevo estado inicial
+        new_initial_state = State(current_state_id+1, [], True, False, 0)
+        #Se crea el nuevo estado de aceptacion
+        new_accept_state = State(current_state_id+2, [], False, True, token)
         
         for t in aux_self.states:
-            if t.is_accept_state:
-                t.add_transition( Transition(chr(400), {aux_self.initial_state}) )
-                new_initial_state.add_transition(Transition(chr(400), {aux_self.initial_state}))
-                t.add_transition(chr(400), {new_final_state})
-                t.is_accept_state = False
-                aux_self.initial_state.is_initial_state = False
-            
+        	#Si el estado actual es el estado de aceptacion del AFN
+        	if t.is_accept_state:
+        		#Se añade una transicion del mismo al estado inicial
+        		t.add_transition(Transition(chr(400), {aux_self.initial_state}))
+
+        for t in aux_self.states:
+        	#Si el estado actual es el estado de aceptacion del AFN
+        	if t.is_accept_state:
+        		#Se añade una transicion del mismo al nuevo estado de aceptacion
+        		t.add_transition(Transition(chr(400), {new_accept_state}))
+        		#El estado actual ya no será de aceptación
+        		t.is_accept_state = False
+        		
+        	#Si el estado actual es el estado inicial del AFN
+        	if t.is_initial_state:
+        		#El nuevo estado inicial hara una transicion hacia el estado actual
+        		new_initial_state.add_transition(Transition(chr(400), {t}))
+        		#El estado actual ya no sera de aceptacion
+        		t.is_initial_state = False
+        		
         new_states.update(aux_self.states)
         new_states.add(new_initial_state)
-        new_states.add(new_final_state)
-        
-        a = AFN(afn_id, new_initial_state, self.alphabet, {new_final_state}, new_states)
-        
-        return a
+        new_states.add(new_accept_state)
 
+        a = AFN(afn_id, new_initial_state, aux_self.alphabet, {new_accept_state}, new_states)
+        return a
+    
     def optional_operator(self, afn_id, current_state_id, token):
         new_initial_state = State(current_state_id+1, [], True, False, 0)
         new_final_state = State(current_state_id+2,[], False, True, token)
