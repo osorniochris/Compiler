@@ -195,20 +195,20 @@ while opc1 != 10:
 
 				if cerr == 1:
 					#aplicar cerradura transitiva
-					afn_cerr = afns[afn].kleene_plus(ident)
+					afn_cerr = afns[afn].kleene_plus(ident, stateNum, token)
 
 				elif cerr == 2:
 					#aplicar cerradura Kleene 
-					afn_cerr = afns[afn].kleene_star(ident)
+					afn_cerr = afns[afn].kleene_star(ident, stateNum, token)
 
 			else:
 				if cerr == 1:
 					#aplicar cerradura transitiva
-					afn_cerr = afns[afn].kleene_plus(ident)
+					afn_cerr = afns[afn].kleene_plus(ident, stateNum, 0)
 
 				elif cerr == 2:
 					#aplicar cerradura Kleene 
-					afn_cerr = afns[afn].kleene_star(ident)
+					afn_cerr = afns[afn].kleene_star(ident, stateNum, 0)
 
 
 			# agregar el afn resultante a la lista
@@ -252,11 +252,11 @@ while opc1 != 10:
 				token = input()
 
 				#aplicar el operador opcional
-				afn_opc = afns[afn].optional_operator(ident)
+				afn_opc = afns[afn].optional_operator(ident, stateNum, token)
 
 			else:
 				#aplicar el operador opcional
-				afn_opc = afns[afn].optional_operator(ident)
+				afn_opc = afns[afn].optional_operator(ident, stateNum, 0)
 
 			# agregar el afn resultante a la lista
 			afns.append(afn_opc)
