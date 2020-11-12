@@ -175,7 +175,7 @@ class AFN:
             if t.is_accept_state:
                 new_initial_state.add_transition(Transition(chr(400), {aux_self.initial_state}))
                 new_initial_state.add_transition(Transition(chr(400), {new_final_state}))
-                t.add_transition(chr(400), {new_final_state})
+                t.add_transition(Transition(chr(400), {new_final_state}))
                 t.is_accept_state = False
                 aux_self.initial_state.is_initial_state = False
             
