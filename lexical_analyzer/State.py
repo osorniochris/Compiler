@@ -7,13 +7,13 @@ class State:
         self.token = token
     
     def __hash__(self):
-        return hash((self.id, tuple(self.transitions), self.is_initial_state, self.is_accept_state, self.token))
+        return hash((self.id, self.is_initial_state, self.is_accept_state, self.token))
 
     def __eq__(self, other):
         if not isinstance(other, type(self)): 
             return NotImplemented
         else:
-            return self.id == other.id and tuple(self.transitions) == tuple(other.transitions) and self.is_initial_state == other.is_initial_state and self.is_accept_state == other.is_accept_state and self.token == other.token
+            return self.id == other.id and  self.is_initial_state == other.is_initial_state and self.is_accept_state == other.is_accept_state and self.token == other.token
     
     def add_transition(self, transition):
         self.transitions.append(transition)
