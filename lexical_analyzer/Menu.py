@@ -73,14 +73,20 @@ while opc1 != 10:
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
-			afn1 = int(input()) - 1
+			index1 = int(input()) - 1
+
+			afn1 = afns[index1]
+			afns.pop(index1)
 
 			print("Seleccione el segundo AFN a unir")
 			#Mostrar lista de afns
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
-			afn2 = int(input()) - 1
+			index2 = int(input()) - 1
+
+			afn2 = afns[index2]
+			afns.pop(index2)
 
 			print("Ingrese un número para el identificador del AFN resultante")
 			ident = input()
@@ -94,10 +100,10 @@ while opc1 != 10:
 				print("¿Cuál sería el token del estado de aceptación?")
 				token = input()
 
-				union = afns[afn1].join_afn(afns[afn2], stateNum, ident, token)
+				union = afn1.join_afn(afn2, stateNum, ident, token)
 
 			else:
-				union = afns[afn1].join_afn(afns[afn2], stateNum, ident, 0)
+				union = afn1.join_afn(afn2, stateNum, ident, 0)
 
 
 			stateNum += 2
@@ -124,14 +130,20 @@ while opc1 != 10:
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
-			afn1 = int(input()) - 1
+			index1 = int(input()) - 1
+
+			afn1 = afns[index1]
+			afns.pop(index1)
 
 			print("Seleccione el segundo AFN a concatenar")
 			#Mostrar lista de afns
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
-			afn2 = int(input()) - 1
+			index2 = int(input()) - 1
+
+			afn2 = afns[index2]
+			afns.pop(index2)
 
 			print("Ingrese un número para el identificador del AFN resultante")
 			ident = input()
@@ -145,10 +157,10 @@ while opc1 != 10:
 				print("¿Cuál sería el token del estado de aceptación?")
 				token = input()
 
-				concat = afns[afn1].concatenate_afn(afns[afn2], ident, token)
+				concat = afn1.concatenate_afn(afn2, ident, token)
 
 			else:
-				concat = afns[afn1].concatenate_afn(afns[afn2], ident, 0)
+				concat = afn1.concatenate_afn(afn2, ident, 0)
 
 			# agregar el afn resultante a la lista
 			afns.append(concat)
@@ -179,7 +191,10 @@ while opc1 != 10:
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
-			afn = int(input()) - 1
+			index = int(input()) - 1
+
+			afn = afns[index]
+			afns.pop(index)
 
 			print("Ingrese un número para el identificador del AFN resultante")
 			ident = input()
@@ -195,20 +210,20 @@ while opc1 != 10:
 
 				if cerr == 1:
 					#aplicar cerradura transitiva
-					afn_cerr = afns[afn].kleene_plus(ident, stateNum, token)
+					afn_cerr = afn.kleene_plus(ident, stateNum, token)
 
 				elif cerr == 2:
 					#aplicar cerradura Kleene 
-					afn_cerr = afns[afn].kleene_star(ident, stateNum, token)
+					afn_cerr = afn.kleene_star(ident, stateNum, token)
 
 			else:
 				if cerr == 1:
 					#aplicar cerradura transitiva
-					afn_cerr = afns[afn].kleene_plus(ident, stateNum, 0)
+					afn_cerr = afn.kleene_plus(ident, stateNum, 0)
 
 				elif cerr == 2:
 					#aplicar cerradura Kleene 
-					afn_cerr = afns[afn].kleene_star(ident, stateNum, 0)
+					afn_cerr = afn.kleene_star(ident, stateNum, 0)
 
 
 			# agregar el afn resultante a la lista
@@ -237,7 +252,10 @@ while opc1 != 10:
 			for i in range(0, len(afns)):
 				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
-			afn = int(input()) - 1
+			index = int(input()) - 1
+
+			afn = afns[index]
+			afns.pop(index)
 
 			print("Ingrese un número para el identificador del AFN resultante")
 			ident = input()
@@ -252,11 +270,11 @@ while opc1 != 10:
 				token = input()
 
 				#aplicar el operador opcional
-				afn_opc = afns[afn].optional_operator(ident, stateNum, token)
+				afn_opc = afn.optional_operator(ident, stateNum, token)
 
 			else:
 				#aplicar el operador opcional
-				afn_opc = afns[afn].optional_operator(ident, stateNum, 0)
+				afn_opc = afn.optional_operator(ident, stateNum, 0)
 
 			# agregar el afn resultante a la lista
 			afns.append(afn_opc)
@@ -287,8 +305,9 @@ while opc1 != 10:
 
 			afn = int(input()) - 1
 			afnstojoin.append(afns[afn])
+			afns.pop(afn)
 
-			while afn != (len(afns) + 1):
+			while afn != len(afns) and len(afns) != 0:
 				print("¿Cuál otro?")
 				#mostrar la lista de afns
 				for i in range(0, len(afns)):
