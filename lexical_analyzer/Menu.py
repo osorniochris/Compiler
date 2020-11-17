@@ -27,8 +27,11 @@ while opc1 != 10:
 	if opc1 == 1:
 		afn = None
 
-		print("Ingrese el caractér de transición")
-		char = input()
+		print("Ingrese el caracter de inicio del rango")
+		char1 = input()
+
+		print("Ingrese el caracter de final del rango")
+		char2 = input()
 
 		print("Ingrese un número para el identificador")
 		ident = input()
@@ -43,11 +46,11 @@ while opc1 != 10:
 			token = input()
 
 			#Crear un afn con los datos introducidos
-			afn = AFN.create_basic(stateNum, ident, token, char)
+			afn = AFN.create_basic(stateNum, ident, token, char1)
 
 		else:
 			#Crear un afn con los datos introducidos
-			afn = AFN.create_basic(stateNum, ident, 0, char)
+			afn = AFN.create_basic(stateNum, ident, 0, char1)
 
 		stateNum += 2
 
