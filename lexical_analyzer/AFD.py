@@ -4,8 +4,8 @@ from graphviz import Digraph
 import tempfile
 
 class AFD:
-    def __init__(self, id, initial_state, alphabet, accept_states, states):
-        self.id = id
+    def __init__(self, id_, initial_state, alphabet, accept_states, states):
+        self.id_ = id_
         self.initial_state = initial_state
         self.alphabet = alphabet
         self.accept_states = accept_states
@@ -26,7 +26,7 @@ class AFD:
             self.states.add(destination)
 
         for s in self.states:
-            if s.id == subset:
+            if s.id_ == subset:
                 origin_exists = True
                 if token_1 != 0:
                     s.is_accept_state = True
@@ -81,20 +81,20 @@ class AFD:
         
 
     def show(self):
-        f = Digraph('afn_' + str(self.id), filename='afn_' + str(self.id), format='png')
+        f = Digraph('afn_' + str(self.id_), filename='afn_' + str(self.id_), format='png')
         f.attr(rankdir='LR', size='8,5')
         
         f.attr('node', shape='doublecircle')
         for s in self.accept_states:
-            f.node(str(s.id))
+            f.node(str(s.id_))
 
         f.attr('node', shape='circle')
-        f.node(str(self.initial_state.id))
+        f.node(str(self.initial_state.id_))
 
         for s in self.states:
             for t in s.transitions:
                 for d in t.destination_states:
-                    f.edge(str(s.id), str(d.id), label= str(t.symbol))
+                    f.edge(str(s.id_), str(d.id_), label= str(t.symbol))
 
         f.view(tempfile.mktemp())
 

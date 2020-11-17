@@ -8,8 +8,8 @@ import tempfile
 import copy
 
 class AFN:
-    def __init__(self, id, initial_state, alphabet, accept_states, states):
-        self.id = id
+    def __init__(self, id_, initial_state, alphabet, accept_states, states):
+        self.id_ = id_
         self.initial_state = initial_state
         self.alphabet = alphabet
         self.accept_states = accept_states
@@ -27,13 +27,11 @@ class AFN:
 
     def join_afn(self, afn, current_state_id, afn_id, token):
         new_states = set()
-        aux_self = copy.deepcopy(self)
-        aux_afn = copy.deepcopy(afn)
 
         initial_state = State(current_state_id+1, [], True, False, 0)
         final_state = State(current_state_id+2, [], False, True, token)
 
-        for a_s in aux_self.states:
+        for a_s in self.states:
             if a_s.is_accept_state:
                 a_s.add_transition(Transition(chr(400), {final_state}))
                 a_s.is_accept_state = False
@@ -41,7 +39,7 @@ class AFN:
                 initial_state.add_transition(Transition(chr(400), {a_s}))
                 a_s.is_initial_state = False
         
-        for a_s in aux_afn.states:
+        for a_s in afn.states:
             if a_s.is_accept_state:
                 a_s.add_transition(Transition(chr(400), {final_state}))
                 a_s.is_accept_state = False
@@ -49,9 +47,9 @@ class AFN:
                 initial_state.add_transition(Transition(chr(400), {a_s}))
                 a_s.is_initial_state = False
         
-        new_alphabet = list(set(aux_self.alphabet) | set(aux_afn.alphabet))
-        new_states.update(aux_self.states) 
-        new_states.update(aux_afn.states)
+        new_alphabet = list(set(self.alphabet) | set(afn.alphabet))
+        new_states.update(self.states) 
+        new_states.update(afn.states)
         new_states.add(initial_state)
         new_states.add(final_state)
 
@@ -60,48 +58,54 @@ class AFN:
         return a
         
     def concatenate_afn(self, afn, afn_id, token):
-        aux_self = copy.deepcopy(self)
-        afn_aux = copy.deepcopy(afn)
-        for s in aux_self.states:
+
+        for s in self.states:
             if s.is_accept_state:
-                for t in afn_aux.initial_state.transitions:
+                for t in afn.initial_state.transitions:
                     s.add_transition(t)
+
+                for x in afn.states:
+                    for tx in x.transitions:
+                        if {afn.initial_state}.issubset(tx.destination_states):
+                            x.add_transition(Transition(tx.symbol, {s}))
+
                 s.is_accept_state = False
                 s.token = 0
+
+        afn.states.remove(afn.initial_state)
         
-        
-        afn_aux.states.remove(afn_aux.initial_state)
-        
-        for a_s in afn_aux.accept_states:
+        for a_s in afn.accept_states:
             a_s.token = token
         
-        new_alphabet = list(set(aux_self.alphabet) | set(afn_aux.alphabet))
+        for a_s in afn.states:
+            if a_s.is_accept_state:
+                a_s.token = token
+
+        new_alphabet = list(set(self.alphabet) | set(afn.alphabet))
         new_states = set()
-        new_states.update(aux_self.states) 
-        new_states.update(afn_aux.states)
+        new_states.update(self.states) 
+        new_states.update(afn.states)
         
-        a = AFN(afn_id, aux_self.initial_state, new_alphabet, afn_aux.accept_states, new_states)
+        a = AFN(afn_id, self.initial_state, new_alphabet, afn.accept_states, new_states)
 
         return a
 
     def kleene_star(self, afn_id, current_state_id, token):
     	#Se define el set donde iran los nuevos estados
         new_states = set()
-    	#Se crea una copia exacta del AFN seleccionado
-        aux_self = copy.deepcopy(self)
 
     	#Se crea el nuevo estado inicial
         new_initial_state = State(current_state_id+1, [], True, False, 0)
         #Se crea el nuevo estado de aceptacion
         new_accept_state = State(current_state_id+2, [], False, True, token)
         
-        for t in aux_self.states:
+        for t in self.states:
         	#Si el estado actual es el estado de aceptacion del AFN
         	if t.is_accept_state:
         		#Se añade una transicion del mismo al estado inicial
-        		t.add_transition(Transition(chr(400), {aux_self.initial_state}))
+        		t.add_transition(Transition(chr(400), {self.initial_state}))
 
-        for t in aux_self.states:
+        for t in self.states:
         	#Si el estado actual es el estado de aceptacion del AFN
         	if t.is_accept_state:
         		#Se añade una transicion del mismo al nuevo estado de aceptacion
@@ -118,31 +122,29 @@ class AFN:
 
         new_initial_state.add_transition(Transition(chr(400), {new_accept_state}))
 
-        new_states.update(aux_self.states)
+        new_states.update(self.states)
         new_states.add(new_initial_state)
         new_states.add(new_accept_state)
 
-        a = AFN(afn_id, new_initial_state, aux_self.alphabet, {new_accept_state}, new_states)
+        a = AFN(afn_id, new_initial_state, self.alphabet, {new_accept_state}, new_states)
         return a				
 
     def kleene_plus(self, afn_id, current_state_id, token):
     	#Se define el set donde iran los nuevos estados
         new_states = set()
-    	#Se crea una copia exacta del AFN seleccionado
-        aux_self = copy.deepcopy(self)
 
     	#Se crea el nuevo estado inicial
         new_initial_state = State(current_state_id+1, [], True, False, 0)
         #Se crea el nuevo estado de aceptacion
         new_accept_state = State(current_state_id+2, [], False, True, token)
         
-        for t in aux_self.states:
+        for t in self.states:
         	#Si el estado actual es el estado de aceptacion del AFN
         	if t.is_accept_state:
         		#Se añade una transicion del mismo al estado inicial
-        		t.add_transition(Transition(chr(400), {aux_self.initial_state}))
+        		t.add_transition(Transition(chr(400), {self.initial_state}))
 
-        for t in aux_self.states:
+        for t in self.states:
         	#Si el estado actual es el estado de aceptacion del AFN
         	if t.is_accept_state:
         		#Se añade una transicion del mismo al nuevo estado de aceptacion
@@ -157,11 +159,11 @@ class AFN:
         		#El estado actual ya no sera de aceptacion
         		t.is_initial_state = False
         		
-        new_states.update(aux_self.states)
+        new_states.update(self.states)
         new_states.add(new_initial_state)
         new_states.add(new_accept_state)
 
-        a = AFN(afn_id, new_initial_state, aux_self.alphabet, {new_accept_state}, new_states)
+        a = AFN(afn_id, new_initial_state, self.alphabet, {new_accept_state}, new_states)
         return a
     
     def optional_operator(self, afn_id, current_state_id, token):
@@ -169,17 +171,16 @@ class AFN:
         new_final_state = State(current_state_id+2,[], False, True, token)
         
         new_states = set()
-        aux_self = copy.deepcopy(self)
         
-        for t in aux_self.states:
+        for t in self.states:
             if t.is_accept_state:
-                new_initial_state.add_transition(Transition(chr(400), {aux_self.initial_state}))
+                new_initial_state.add_transition(Transition(chr(400), {self.initial_state}))
                 new_initial_state.add_transition(Transition(chr(400), {new_final_state}))
                 t.add_transition(Transition(chr(400), {new_final_state}))
                 t.is_accept_state = False
-                aux_self.initial_state.is_initial_state = False
+                self.initial_state.is_initial_state = False
             
-        new_states.update(aux_self.states)
+        new_states.update(self.states)
         new_states.add(new_initial_state)
         new_states.add(new_final_state)
         
@@ -243,18 +244,18 @@ class AFN:
     def to_afd(self, id_afd, current_state_id):
         R = set()
         checked = []
-        aux_self = copy.deepcopy(self)
+        self = copy.copy(self)
 
-        s_0 = Subset(0, AFN.epsilon_closure({aux_self.initial_state}))
+        s_0 = Subset(0, AFN.epsilon_closure({self.initial_state}))
         R.add(s_0)
         i = 1
 
-        afd = AFD(id_afd, None, aux_self.alphabet, set(), set())
+        afd = AFD(id_afd, None, self.alphabet, set(), set())
 
         while len(R) > 0:
             r = R.pop()
             if not r in checked:
-                for c in aux_self.alphabet:
+                for c in self.alphabet:
                     states = AFN.go_to(c, r.states)
 
                     if len(states) != 0:
@@ -262,7 +263,7 @@ class AFN:
                         exists = False
                         for r_ in checked:
                             if r_.states.issubset(states) and r_.states.issuperset(states):
-                                id_aux == r_.id 
+                                id_aux == r_.id_ 
                                 exists = True
                         
                         if not exists:
@@ -270,21 +271,21 @@ class AFN:
                             token_1 = 0
                             token_2 = 0
                         
-                            e = r.states.intersection(aux_self.accept_states)
+                            e = r.states.intersection(self.accept_states)
                             if len(e) != 0:
                                 token_1 = e.pop().token
                             
-                            d = sn.states.intersection(aux_self.accept_states)
+                            d = sn.states.intersection(self.accept_states)
                             if len(d) != 0:
                                 token_2 = d.pop().token
                         
-                            t = (r.id, i, c, token_1, token_2)
+                            t = (r.id_, i, c, token_1, token_2)
                             afd.add(t)
                             afd.add_to_table(t)
                             i += 1
                             R.add(sn)
                         else:
-                            t = (r.id, id_aux, c, token_1, token_2)
+                            t = (r.id_, id_aux, c, token_1, token_2)
                             afd.add(t)
                             afd.add_to_table(t)
                             
@@ -308,20 +309,20 @@ class AFN:
         return True 
 
     def show(self):
-        f = Digraph('afn_' + str(self.id), filename='afn_' + str(self.id), format='png')
+        f = Digraph('afn_' + str(self.id_), filename='afn_' + str(self.id_), format='png')
         f.attr(rankdir='LR', size='8,5')
         
         f.attr('node', shape='doublecircle')
         for s in self.accept_states:
-            f.node(str(s.id))
+            f.node(str(s.id_))
 
         f.attr('node', shape='circle')
-        f.node(str(self.initial_state.id))
+        f.node(str(self.initial_state.id_))
 
         for s in self.states:
             for t in s.transitions:
                 for d in t.destination_states:
-                    f.edge(str(s.id), str(d.id), label= str(t.symbol))
+                    f.edge(str(s.id_), str(d.id_), label= str(t.symbol))
 
         f.view(tempfile.mktemp())
     
@@ -331,11 +332,10 @@ class AFN:
         new_alphabet = []
         new_accept_states = set()
         new_states = set()
-        afns_aux = copy.deepcopy(afns)
 
         i_s = State(current_state_id+1, [], True, False, 0)
 
-        for afn in afns_aux:
+        for afn in afns:
             i_s.add_transition(Transition(chr(400), {afn.initial_state}))
             afn.initial_state.is_initial_state = False
 

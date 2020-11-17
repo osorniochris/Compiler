@@ -71,14 +71,14 @@ while opc1 != 10:
 			print("Seleccione el primer AFN a unir")
 			#Mostrar lista de afns
 			for i in range(0, len(afns)):
-				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
 			afn1 = int(input()) - 1
 
 			print("Seleccione el segundo AFN a unir")
 			#Mostrar lista de afns
 			for i in range(0, len(afns)):
-				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
 			afn2 = int(input()) - 1
 
@@ -122,14 +122,14 @@ while opc1 != 10:
 			print("Seleccione el primer AFN a concatenar")
 			#Mostrar lista de afns
 			for i in range(0, len(afns)):
-				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
 			afn1 = int(input()) - 1
 
 			print("Seleccione el segundo AFN a concatenar")
 			#Mostrar lista de afns
 			for i in range(0, len(afns)):
-				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
 			afn2 = int(input()) - 1
 
@@ -177,7 +177,7 @@ while opc1 != 10:
 			print("¿A qué AFN le gustaría aplicar la cerradura?")
 			#mostrar la lista de afns
 			for i in range(0, len(afns)):
-				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
 			afn = int(input()) - 1
 
@@ -235,7 +235,7 @@ while opc1 != 10:
 			print("¿A qué AFN le gustaría aplicar el operador?")
 			#mostrar la lista de afns
 			for i in range(0, len(afns)):
-				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
 			afn = int(input()) - 1
 
@@ -283,7 +283,7 @@ while opc1 != 10:
 			print("Elija uno de los AFN para el analizador Léxico")
 			#mostrar la lista de afns
 			for i in range(0, len(afns)):
-				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
 			afn = int(input()) - 1
 			afnstojoin.append(afns[afn])
@@ -292,7 +292,7 @@ while opc1 != 10:
 				print("¿Cuál otro?")
 				#mostrar la lista de afns
 				for i in range(0, len(afns)):
-					print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+					print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
 				print("   " + str(len(afns) + 1) + ". Ningún otro")
 
@@ -329,7 +329,7 @@ while opc1 != 10:
 			print("¿Qué AFN le gustaría convertir?")
 			#mostrar la lista de afns
 			for i in range(0, len(afns)):
-				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
 			afn = int(input()) - 1
 
@@ -362,15 +362,17 @@ while opc1 != 10:
 			print("¿Con qué autómata quieres validarla?")
 			#mostrar la lista de afns
 			for i in range(0, len(afns)):
-				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
 			for i in range(0, len(afds)):
-				print("   " + str(i + 1 + len(afns)) + ". AFD ID: " + str(afds[i].id))
+				print("   " + str(i + 1 + len(afns)) + ". AFD ID: " + str(afds[i].id_))
 
 			af = int(input()) - 1
 
 			# validar cadena
 			# dar veredicto de cadena
+			validate = afns[af].check_string(cadena)
+			print(validate)
 
 		else:
 			print("Lo siento, aún no hay ningún AFN para validar una cadena")
@@ -380,10 +382,10 @@ while opc1 != 10:
 			print("¿Qué autómata quieres ver?")
 			#mostrar la lista de afns y afds
 			for i in range(0, len(afns)):
-				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id))
+				print("   " + str(i + 1) + ". AFN ID: " + str(afns[i].id_))
 
 			for i in range(0, len(afds)):
-				print("   " + str(i + 1 + len(afns)) + ". AFD ID: " + str(afds[i].id))
+				print("   " + str(i + 1 + len(afns)) + ". AFD ID: " + str(afds[i].id_))
 
 			af = int(input()) - 1
 
