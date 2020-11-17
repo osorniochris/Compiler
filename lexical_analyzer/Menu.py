@@ -298,7 +298,7 @@ while opc1 != 10:
 
 				afn = int(input()) - 1
 
-				if afn != (len(afns) + 1):
+				if afn != len(afns):
 					afnstojoin.append(afns[afn])
 
 			print("Ingrese un número para el identificador del AFN resultante")
