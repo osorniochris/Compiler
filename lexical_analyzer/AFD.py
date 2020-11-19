@@ -2,6 +2,7 @@ from State import State
 from Transition import Transition
 from graphviz import Digraph
 import tempfile
+import json
 
 class AFD:
     def __init__(self, id_, initial_state, alphabet, accept_states, states):
@@ -97,6 +98,10 @@ class AFD:
                     f.edge(str(s.id_), str(d.id_), label= str(t.symbol))
 
         f.view(tempfile.mktemp())
+    
+    def table_to_file(self):
+        with open('afd'+self.id_+'_table.json', 'w') as table_json:
+            json.dump(self.table, table_json, indent=2)
 
 
 
