@@ -33,18 +33,18 @@ class AFN:
 
         for a_s in self.states:
             if a_s.is_accept_state:
-                a_s.add_transition(Transition(chr(400), {final_state}))
+                a_s.add_transition(Transition(chr(400), chr(400), {final_state}))
                 a_s.is_accept_state = False
             if a_s.is_initial_state:
-                initial_state.add_transition(Transition(chr(400), {a_s}))
+                initial_state.add_transition(Transition(chr(400), chr(400), {a_s}))
                 a_s.is_initial_state = False
         
         for a_s in afn.states:
             if a_s.is_accept_state:
-                a_s.add_transition(Transition(chr(400), {final_state}))
+                a_s.add_transition(Transition(chr(400), chr(400), {final_state}))
                 a_s.is_accept_state = False
             if a_s.is_initial_state:
-                initial_state.add_transition(Transition(chr(400), {a_s}))
+                initial_state.add_transition(Transition(chr(400), chr(400), {a_s}))
                 a_s.is_initial_state = False
         
         new_alphabet = list(set(self.alphabet) | set(afn.alphabet))
@@ -67,7 +67,7 @@ class AFN:
                 for x in afn.states:
                     for tx in x.transitions:
                         if {afn.initial_state}.issubset(tx.destination_states):
-                            x.add_transition(Transition(tx.symbol, {s}))
+                            x.add_transition(Transition(tx.symbol_1, tx.symbol_2, {s}))
 
                 s.is_accept_state = False
                 s.token = 0
@@ -322,7 +322,10 @@ class AFN:
         for s in self.states:
             for t in s.transitions:
                 for d in t.destination_states:
-                    f.edge(str(s.id_), str(d.id_), label= str(t.symbol))
+                    if t.symbol_1 == t.symbol_2:
+                        f.edge(str(s.id_), str(d.id_), label= str(t.symbol_1))
+                    else:
+                        f.edge(str(s.id_), str(d.id_), label= str(t.symbol_1)+"-"+str(t.symbol_2))
 
         f.view(tempfile.mktemp())
     
@@ -336,7 +339,7 @@ class AFN:
         i_s = State(current_state_id+1, [], True, False, 0)
 
         for afn in afns:
-            i_s.add_transition(Transition(chr(400), {afn.initial_state}))
+            i_s.add_transition(Transition(chr(400), chr(400), {afn.initial_state}))
             afn.initial_state.is_initial_state = False
 
             new_alphabet.extend([element for element in afn.alphabet if element not in new_alphabet])
