@@ -16,13 +16,20 @@ class AFN:
         self.states = states
     
     @staticmethod
-    def create_basic(current_state_id, current_afn_id, token, symbol):
+    def create_basic(current_state_id, current_afn_id, token, char1, char2):
         initial_state = State(current_state_id+1, [], True, False, 0)
         accept_state = State(current_state_id+2, [], False, True, token)
 
-        initial_state.add_transition(Transition(symbol, {accept_state}))
+        initial_state.add_transition(Transition(char1, char2, {accept_state}))
+        
+        new_alphabet = set()
+        ini = ord(char1)
+        fin = ord(char2)
+        
+        for x=ini in fin:
+            new_alphabet.add(chr(x))
 
-        a = AFN(current_afn_id, initial_state, {symbol}, {accept_state}, {initial_state, accept_state})
+        a = AFN(current_afn_id, initial_state, new_alphabet , {accept_state}, {initial_state, accept_state})
         return a
 
     def join_afn(self, afn, current_state_id, afn_id, token):
