@@ -6,70 +6,57 @@ class Lexic:
 		self.stringAn = stringAn
 		self.lexema = ""
 		self.inilexema = 0
-		self.finlexema = 0
+		self.finlexema = -1
+		self.caracterActual = 0
+		self.acceptStates = []
+		self.acceptStatesN = 0
+		self.currentState = 0
 
 	#Funcion para validar cadena
 	def yylex(self):
-<<<<<<< HEAD
+		#Se inicializa la bandera en Falso
 		flag_accept_state = False
-=======
-		flag_accept_state = False;
->>>>>>> b3a883e049a33a47df2bc9f8cb6142c04e82f301
-		#Si solo es una caracter no hace nada
+		#Si la cadena es solo 1 caracter
 		if(len(self.stringAn) <= 1):
+			#No regresa nada
 			return 0
-		
-		m = self.inilexema
-<<<<<<< HEAD
-		acceptStates = []
-=======
-		acceptStates = { }
->>>>>>> b3a883e049a33a47df2bc9f8cb6142c04e82f301
-		acceptStatesN = 0
+		#Token auxiliar
+		tokenAct = 0
+		#se ubica el auxiliar en el estado actual
+		m = self.currentState
 		#Recorrido de la cadena
-		while self.finlexema < len(self.stringAn):
+		while self.caracterActual < len(self.stringAn):
 			#si hay alguna transicion
-<<<<<<< HEAD
-			if self.table[str(m)][self.stringAn[self.finlexema]] != -1:
-				#Se guarda el caracter en el lexema
-				self.lexema += self.stringAn[self.finlexema]
+			if self.table[str(m)][self.stringAn[self.caracterActual]] != -1:
 				#Se mueve al sigioente estado
-				self.inilexema = self.table[str(m)][self.stringAn[self.finlexema]]
-				m = self.inilexema
+				m = self.table[str(m)][self.stringAn[self.caracterActual]]
+				#Se cambia el current State al nuevo
+				self.currentState = str(m)
 				#se recorre la cadena
-				self.finlexema = self.finlexema + 1
+				self.caracterActual += 1
 				#Si este es un estado de aceptacion
 				if self.table[str(m)]["token"] != -1:
-=======
-			if table[str(m)][self.stringAn[n]] != -1:
-				#Se guarda el caracter en el lexema
-				self.lexema.add(self.stringAn[n])
-				#Se mueve al sigioente estado
-				self.inilexema, m = table[str(m)][self.stringAn[n]]
-				#se recorre la cadena
-				self.finlexema = self.finlexema + 1
-				#Si este es un estado de aceptacion
-				if table[str(m)]["token"] != 0:
->>>>>>> b3a883e049a33a47df2bc9f8cb6142c04e82f301
-					#se guarda la posicion
-					acceptStates.append(acceptStatesN)
-					acceptStatesN = acceptStatesN + 1
-					#Se activa la bandera
+					#Se mueve el Lexema
+					self.finlexema = self.finlexema + 1
+					#Se cambia la bandera a True
 					flag_accept_state = True
-				else 
-					#Si no, se apaga la bandera
+					#Se añade el estado de aceptacion al arreglo
+					self.acceptStates.append(str(m))
+					#Se añade uno a la cuenta de edos de acept
+					self.acceptStatesN += 1		
+					#Se cambia el valor del token nuevo
+					tokenAct = self.table[str(m)]["token"]
+				elif !flag_accept_state:
+					#Si no ha pasado por edo de acept se cambia a falso
 					flag_accept_state = False	
-			
-		
 			else:
 				#Si no hay tranicion y no esta en edo de aceptacion 
 				if flag_accept_state:
 					#Si si se habia visitado se regresa el token del edo y el lexema
-					return self.table[str(m)]["token"]
-<<<<<<< HEAD
-					
-=======
->>>>>>> b3a883e049a33a47df2bc9f8cb6142c04e82f301
+					return tokenAct	
+				else:
+					#Regresa error
+					return -1	
 
 	def yytext(self):
-		return self.lexema
+		return self.stringAn[self.inilexema:self.finlexema]
