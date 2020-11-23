@@ -4,7 +4,6 @@ class Lexic:
 	def __init__(self, table, stringAn):
 		self.table = table
 		self.stringAn = stringAn
-		self.lexema = ""
 		self.inilexema = 0
 		self.finlexema = -1
 		self.caracterActual = 0
