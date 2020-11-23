@@ -10,11 +10,10 @@ class Lexic:
 		self.acceptStates = []
 		self.acceptStatesN = 0
 		self.currentState = 0
+		self.flag_accept_state = False
 
 	#Funcion para validar cadena
 	def yylex(self):
-		#Se inicializa la bandera en Falso
-		flag_accept_state = False
 		#Si la cadena es solo 1 caracter
 		if(len(self.stringAn) <= 1):
 			#No regresa nada
@@ -38,19 +37,17 @@ class Lexic:
 					#Se mueve el Lexema
 					self.finlexema = self.finlexema + 1
 					#Se cambia la bandera a True
-					flag_accept_state = True
+					self.flag_accept_state = True
 					#Se añade el estado de aceptacion al arreglo
 					self.acceptStates.append(str(m))
 					#Se añade uno a la cuenta de edos de acept
 					self.acceptStatesN += 1		
 					#Se cambia el valor del token nuevo
 					tokenAct = self.table[str(m)]["token"]
-				elif !flag_accept_state:
-					#Si no ha pasado por edo de acept se cambia a falso
-					flag_accept_state = False	
+					
 			else:
 				#Si no hay tranicion y no esta en edo de aceptacion 
-				if flag_accept_state:
+				if self.flag_accept_state:
 					#Si si se habia visitado se regresa el token del edo y el lexema
 					return tokenAct	
 				else:
