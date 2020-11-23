@@ -46,11 +46,11 @@ while opc1 != 10:
 			token = input()
 
 			#Crear un afn con los datos introducidos
-			afn = AFN.create_basic(stateNum, ident, token, char1)
+			afn = AFN.create_basic(stateNum, ident, token, char1, char2)
 
 		else:
 			#Crear un afn con los datos introducidos
-			afn = AFN.create_basic(stateNum, ident, 0, char1)
+			afn = AFN.create_basic(stateNum, ident, 0, char1, char2)
 
 		stateNum += 2
 
