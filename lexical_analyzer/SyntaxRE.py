@@ -72,6 +72,7 @@ class SyntaxRE:
         token = self.lexic.yylex()
 
         if token == self.CONC:
+            afn_2 = None
             boolean, afn_2 = self.C(afn_2)
             if boolean:
                 afn = afn.concatenate_afn(afn_2, numAutomata, token)

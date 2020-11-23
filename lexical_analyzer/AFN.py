@@ -356,9 +356,17 @@ class AFN:
             for t in s.transitions:
                 for d in t.destination_states:
                     if t.symbol_1 == t.symbol_2:
-                        f.edge(str(s.id_), str(d.id_), label= str(t.symbol_1))
+                        if ord(t.symbol_1) == 92:
+                            f.edge(str(s.id_), str(d.id_), label= "\\")
+                        else:
+                            f.edge(str(s.id_), str(d.id_), label= str(t.symbol_1))
                     else:
-                        f.edge(str(s.id_), str(d.id_), label= str(t.symbol_1)+"-"+str(t.symbol_2))
+                        if ord(t.symbol_1) == 92:
+                            f.edge(str(s.id_), str(d.id_), label= "\\"+"-"+str(t.symbol_2))
+                        elif ord(t.symbol_2) == 92:
+                            f.edge(str(s.id_), str(d.id_), label= str(t.symbol_1)+"-"+"\\")
+                        else: 
+                            f.edge(str(s.id_), str(d.id_), label= str(t.symbol_1)+"-"+str(t.symbol_2))
 
         f.view(tempfile.mktemp())
     
