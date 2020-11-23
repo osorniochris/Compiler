@@ -46,11 +46,11 @@ while opc1 != 10:
 			token = input()
 
 			#Crear un afn con los datos introducidos
-			afn = AFN.create_basic(stateNum, ident, token, char1)
+			afn = AFN.create_basic(stateNum, ident, token, char1, char2)
 
 		else:
 			#Crear un afn con los datos introducidos
-			afn = AFN.create_basic(stateNum, ident, 0, char1)
+			afn = AFN.create_basic(stateNum, ident, -1, char1, char2)
 
 		stateNum += 2
 
@@ -106,7 +106,7 @@ while opc1 != 10:
 				union = afn1.join_afn(afn2, stateNum, ident, token)
 
 			else:
-				union = afn1.join_afn(afn2, stateNum, ident, 0)
+				union = afn1.join_afn(afn2, stateNum, ident, -1)
 
 
 			stateNum += 2
@@ -163,7 +163,7 @@ while opc1 != 10:
 				concat = afn1.concatenate_afn(afn2, ident, token)
 
 			else:
-				concat = afn1.concatenate_afn(afn2, ident, 0)
+				concat = afn1.concatenate_afn(afn2, ident, -1)
 
 			# agregar el afn resultante a la lista
 			afns.append(concat)
@@ -222,11 +222,11 @@ while opc1 != 10:
 			else:
 				if cerr == 1:
 					#aplicar cerradura transitiva
-					afn_cerr = afn.kleene_plus(ident, stateNum, 0)
+					afn_cerr = afn.kleene_plus(ident, stateNum, -1)
 
 				elif cerr == 2:
 					#aplicar cerradura Kleene 
-					afn_cerr = afn.kleene_star(ident, stateNum, 0)
+					afn_cerr = afn.kleene_star(ident, stateNum, -1)
 
 
 			# agregar el afn resultante a la lista
@@ -277,7 +277,7 @@ while opc1 != 10:
 
 			else:
 				#aplicar el operador opcional
-				afn_opc = afn.optional_operator(ident, stateNum, 0)
+				afn_opc = afn.optional_operator(ident, stateNum, -1)
 
 			# agregar el afn resultante a la lista
 			afns.append(afn_opc)

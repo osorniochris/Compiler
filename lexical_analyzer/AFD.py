@@ -18,40 +18,40 @@ class AFD:
         subset, i, c, token_1, token_2 = t
         origin_exists = False
 
-        if token_2 != 0:
+        if token_2 != -1:
             destination = State(i, [], False, True, token_2) 
             self.states.add(destination)
             self.accept_states.add(destination)
         else:
-            destination = State(i, [], False, False, 0) 
+            destination = State(i, [], False, False, -1) 
             self.states.add(destination)
 
         for s in self.states:
             if s.id_ == subset:
                 origin_exists = True
-                if token_1 != 0:
+                if token_1 != -1:
                     s.is_accept_state = True
                     s.token = token_1
                     self.accept_states.add(s)
-                s.add_transition(Transition(c, {destination}))
+                s.add_transition(Transition(c, c, {destination}))
                 
         if not origin_exists:
             if subset == 0:
-                if token_1 == 0:
-                    state = State(subset, [], True, False, 0)
+                if token_1 == -1:
+                    state = State(subset, [], True, False, -1)
                     self.initial_state = state
                 else:
                     state = State(subset, [], True, True, token_1)
                     self.initial_state = state
                     self.accept_states.add(state)
             else:
-                if token_1 == 0:
-                    state = State(subset, [], False, False, 0)
+                if token_1 == -1:
+                    state = State(subset, [], False, False, -1)
                 else:
                     state = State(subset, [], False, True, token_1)
                     self.accept_states.add(state)
             
-            state.add_transition(Transition(c, {destination}))
+            state.add_transition(Transition(c, c, {destination}))
             self.states.add(state)
 
     def add_to_table(self, t):
@@ -60,25 +60,25 @@ class AFD:
         row_2 = self.table.get(i)
 
         if row == None:
-            self.table[subset] = {}
+            self.table[int(subset)] = {}
             for a in self.alphabet:
                 if a == c:
-                    self.table[subset][a] = i
+                    self.table[int(subset)][a] = int(i)
                 else:
-                    self.table[subset][a] = -1
-            self.table[subset]['token'] = token_1
+                    self.table[int(subset)][a] = -1
+            self.table[int(subset)]['token'] = int(token_1)
         else:
-            self.table[subset][c] = i
-            self.table[subset]['token'] = token_1
+            self.table[int(subset)][c] = int(i)
+            self.table[int(subset)]['token'] = int(token_1)
         
         if row_2 == None:
-            self.table[i] = {}
+            self.table[int(i)] = {}
             for a in self.alphabet:
-                self.table[i][a] = -1
-            self.table[i]['token'] = token_2
+                self.table[int(i)][a] = -1
+            self.table[int(i)]['token'] = int(token_2)
         else:
-            self.table[i][c] = i
-            self.table[i]['token'] = token_2
+            self.table[int(i)][c] = int(i)
+            self.table[int(i)]['token'] = int(token_2)
         
 
     def show(self):
@@ -95,7 +95,10 @@ class AFD:
         for s in self.states:
             for t in s.transitions:
                 for d in t.destination_states:
-                    f.edge(str(s.id_), str(d.id_), label= str(t.symbol))
+                    if t.symbol_1 == t.symbol_2:
+                        f.edge(str(s.id_), str(d.id_), label= str(t.symbol_1))
+                    else:
+                        f.edge(str(s.id_), str(d.id_), label= str(t.symbol_1)+"-"+str(t.symbol_2))
 
         f.view(tempfile.mktemp())
     
