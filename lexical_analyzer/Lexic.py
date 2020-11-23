@@ -48,7 +48,7 @@ class Lexic:
 					current_state = self.table[0]
 				else:
 					#Si si se habia visitado se regresa el token del edo y el lexema
-					return self.table[m][len(self.table[m])]
+					return self.table[str(m)]["token"]
 
 	def yytext(self):
 		return self.lexema
