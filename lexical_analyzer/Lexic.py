@@ -7,20 +7,17 @@ class Lexic:
 		self.inilexema = 0
 		self.finlexema = -1
 		self.caracterActual = 0
-		self.acceptStates = []
-		self.acceptStatesN = 0
+		self.lastIni = []
 		self.currentState = 0
 		self.flag_accept_state = False
 
 	#Funcion para validar cadena
 	def yylex(self):
-		#Si la cadena es solo 1 caracter
-		if(len(self.stringAn) <= 1):
-			#No regresa nada
-			return 0
 		#Token auxiliar
 		tokenAct = 0
 		#se ubica el auxiliar en el estado actual
+		self.currentState = 0
+		self.flag_accept_state = False
 		m = self.currentState
 		#Recorrido de la cadena
 		while self.caracterActual < len(self.stringAn):
@@ -39,9 +36,7 @@ class Lexic:
 					#Se cambia la bandera a True
 					self.flag_accept_state = True
 					#Se añade el estado de aceptacion al arreglo
-					self.acceptStates.append(str(m))
-					#Se añade uno a la cuenta de edos de acept
-					self.acceptStatesN += 1		
+					self.lastIni.append(self.finlexema)	
 					#Se cambia el valor del token nuevo
 					tokenAct = self.table[str(m)]["token"]
 					
@@ -49,10 +44,17 @@ class Lexic:
 				#Si no hay tranicion y no esta en edo de aceptacion 
 				if self.flag_accept_state:
 					#Si si se habia visitado se regresa el token del edo y el lexema
+					self.inilexema = self.lastIni[len(self.lastIni)-1]
 					return tokenAct	
 				else:
 					#Regresa error
 					return -1	
+		return tokenAct
 
 	def yytext(self):
-		return self.stringAn[self.inilexema:self.finlexema]
+		return self.stringAn[self.inilexema:self.finlexema+1]
+	
+	def returnToken(self):
+		self.inilexema = self.lastIni[len(self.lastIni)-1]
+		self.lastIni.pop()
+		self.caracterActual = self.inilexema

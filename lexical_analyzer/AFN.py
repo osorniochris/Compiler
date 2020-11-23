@@ -14,6 +14,11 @@ class AFN:
         self.accept_states = accept_states
         self.states = states
     
+    def set_token(self, token):
+        for s in self.states:
+            if s.is_accept_state:
+                s.token = token
+    
     @staticmethod
     def create_basic(current_state_id, current_afn_id, token, char1, char2):
         initial_state = State(current_state_id+1, [], True, False, -1)
