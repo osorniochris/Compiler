@@ -1,9 +1,10 @@
-numEdo = 0
-numAutomata = 0
 from AFN import AFN
 from Lexic import Lexic
 
 class SyntaxRE:
+
+    numEdo = 0
+    numAutomata = 0
     
     #clases léxicas
     FIN = 0
@@ -49,7 +50,9 @@ class SyntaxRE:
             afn_2 = None
             boolean, afn_2 = self.T(afn_2)
             if boolean:
-                afn = afn.join_afn(afn_2, numEdo, numAutomata, token)
+                afn = afn.join_afn(afn_2, self.numEdo, self.numAutomata, -1)
+                self.numEdo += 2
+                self.numAutomata += 1
                 boolean, afn = self.Ep(afn)
                 if boolean:
                     return True, afn
@@ -75,7 +78,8 @@ class SyntaxRE:
             afn_2 = None
             boolean, afn_2 = self.C(afn_2)
             if boolean:
-                afn = afn.concatenate_afn(afn_2, numAutomata, token)
+                afn = afn.concatenate_afn(afn_2, self.numAutomata, -1)
+                self.numAutomata += 1
                 boolean, afn = self.Tp(afn)
                 if boolean:
                     return True, afn
@@ -98,19 +102,25 @@ class SyntaxRE:
         token = self.lexic.yylex()
 
         if token == self.CERR_POS:
-            afn = afn.kleene_plus(numAutomata, numEdo, token)
+            afn = afn.kleene_plus(self.numAutomata, self.numEdo, -1)
+            self.numEdo += 2
+            self.numAutomata += 1
             boolean, afn = self.Cp(afn)
             if boolean:
                 return True, afn
             return False, afn
         elif token == self.CERR_KLEEN:
-            afn = afn.kleene_star(numAutomata, numEdo, token)
+            afn = afn.kleene_star(self.numAutomata, self.numEdo, -1)
+            self.numEdo += 2
+            self.numAutomata += 1
             boolean, afn = self.Cp(afn)
             if boolean:
                 return True, afn
             return False, afn
         elif token == self.OPC:
-            afn = afn.optional_operator(numAutomata, numEdo, token)
+            afn = afn.optional_operator(self.numAutomata, self.numEdo, -1)
+            self.numEdo += 2
+            self.numAutomata += 1
             boolean, afn = self.Cp(afn)
             if boolean:
                 return True, afn
@@ -135,22 +145,26 @@ class SyntaxRE:
         elif token == self.COR_I:
             token_1 = self.lexic.yylex()
             if token_1 == self.SIMB:
-                lexem_1 = self.lexic.yytext()
+                lexem_1 = self.lexic.yytext
                 token_1 = self.lexic.yylex()
                 if token_1 == self.GUION:
                     token_1 = self.lexic.yylex()
                     if token_1 == self.SIMB:
-                        lexem_2 = self.lexic.yytext()
+                        lexem_2 = self.lexic.yytext
                         token_1 = self.lexic.yylex()
                         if token_1 == self.COR_D:
                             char_1 = lexem_1[0]
                             char_2 = lexem_2[0]
-                            afn = AFN.create_basic(numEdo, numAutomata, token_1, char_1, char_2)
+                            afn = AFN.create_basic(self.numEdo, self.numAutomata, -1, char_1, char_2)
+                            self.numEdo += 2
+                            self.numAutomata += 1
                             return True, afn
             return False, afn
         elif token == self.SIMB:
-            char_1 = self.lexic.yytext()[0]
-            afn = AFN.create_basic(numEdo, numAutomata, token, char_1, char_1)
+            char_1 = self.lexic.yytext[0]
+            afn = AFN.create_basic(self.numEdo, self.numAutomata, -1, char_1, char_1)
+            self.numEdo += 2
+            self.numAutomata += 1
             return True, afn
         
         return False, afn
