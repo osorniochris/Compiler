@@ -7,7 +7,7 @@ class Lexic:
 		self.inilexema = 0
 		self.finlexema = -1
 		self.caracterActual = 0
-		self.lastIni = []
+		self.index = []
 		self.currentState = 0
 		self.flag_accept_state = False
 
@@ -19,6 +19,7 @@ class Lexic:
 		self.currentState = 0
 		self.flag_accept_state = False
 		m = self.currentState
+		self.index.append(self.caracterActual)
 		#Recorrido de la cadena
 		while self.caracterActual < len(self.stringAn):
 			#si hay alguna transicion
@@ -32,11 +33,9 @@ class Lexic:
 				#Si este es un estado de aceptacion
 				if self.table[str(m)]["token"] != -1:
 					#Se mueve el Lexema
-					self.finlexema = self.finlexema + 1
+					self.finlexema += 1
 					#Se cambia la bandera a True
 					self.flag_accept_state = True
-					#Se añade el estado de aceptacion al arreglo
-					self.lastIni.append(self.finlexema)	
 					#Se cambia el valor del token nuevo
 					tokenAct = self.table[str(m)]["token"]
 					
@@ -44,7 +43,6 @@ class Lexic:
 				#Si no hay tranicion y no esta en edo de aceptacion 
 				if self.flag_accept_state:
 					#Si si se habia visitado se regresa el token del edo y el lexema
-					self.inilexema = self.lastIni[len(self.lastIni)-1]
 					return tokenAct	
 				else:
 					#Regresa error
@@ -55,6 +53,4 @@ class Lexic:
 		return self.stringAn[self.inilexema:self.finlexema+1]
 	
 	def returnToken(self):
-		self.inilexema = self.lastIni[len(self.lastIni)-1]
-		self.lastIni.pop()
-		self.caracterActual = self.inilexema
+		self.caracterActual = self.index.pop()
