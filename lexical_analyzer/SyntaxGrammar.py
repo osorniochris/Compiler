@@ -11,7 +11,7 @@ class SyntaxGrammar:
 				return True
 		return False		
 
-	def	G(self):
+	def G(self):
 		if Reglas():
 			return True
 		return False
