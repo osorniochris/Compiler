@@ -1,8 +1,13 @@
+#Equipo: Barajas Pérez Rafael Sahid, Osornio Sánchez Christopher, Sánchez Peña Axel
+#Grupo: 3CM6
+
 from Lexic import Lexic
 class SyntaxGrammar: 
 	def __init__(self, table, string):
 		self.table = table
-		self.strinG = strinG 
+		self.strinG = strinG
+		self.arregloListas = [] 
+		self.simbTemp = []
 
 	def ini(self):
 		if G():
@@ -11,7 +16,7 @@ class SyntaxGrammar:
 				return True
 		return False		
 
-	def G(self):
+	def	G(self):
 		if Reglas():
 			return True
 		return False
@@ -25,18 +30,21 @@ class SyntaxGrammar:
 		return False
 		
 	def Reglas_P(self):
+		estado = Lexic.getEstado()
 		if Regla():
 			token = Lexic.yylex()
 			if token == PYC:
 				if Reglas_P():
 					return True
-		return False
+			return False
+		Lexic.setEstado(estado)	
 	
 	def Regla(self):
 		if Lado_Izq():
+			text = Lexic.yytext()
 			token = Lexic.yylex()
 			if token == FLECHA:
-				if LadosDerechos():
+				if LadosDerechos(text):
 					return True
 		return False												
 
@@ -46,44 +54,50 @@ class SyntaxGrammar:
 			return True
 		return False
 		
-	def LadosDerechos(self):
-		if Lado_Der():
-			if LadosDerechos_p():
+	def LadosDerechos(self, simbIzq):
+		if Lado_Der(simbIzq):
+			if LadosDerechos_p(simbIzq):
 				return True
 		return False					
 
-	def LadosDerechos_p(self):
+	def LadosDerechos_p(self, simbIzq):
 		token = Lexic.yylex()
 		if token == OR:
-			if Lado_Der():
-				if LadosDerechos_p():
+			if Lado_Der(simbIzq):
+				if LadosDerechos_p(simbIzq):
 					return True
 			return False
 		
 		Lexic.regresarToken()
 		return True	
 		
-	def Lado_Der(self):
+	def Lado_Der(self, simbIzq):
+		self.simbTemp = []
 		if ListaSimb():
+			self.arregloListas.append([simbIzq, self.simbTemp])
 			return True
 		return False
 		
 	def ListaSimb(self):
 		token = Lexic.yylex()
 		if token == SIMB:
-			token_1 = Lexic.yylex()
-			if token_1 == SPACE:
-				if ListaSimb_p():
-					return True
+			self.simbTemp.append([Lexic.yytext(),False])
+			if ListaSimb_p():
+				return True
 		return False
 		
 	def ListaSimb_p(self):
 		token = Lexic.yylex()
 		if token == SIMB:
-			token_1 = Lexic.yylex()
-			if token_1 == SPACE:
-				if ListaSimb_p():
-					return True
-		return False
+			self.simbTemp.append([Lexic.yytext(),False])
+			if ListaSimb_p():
+				return True
+			return False
+
+		Lexic.regresarToken()
+		return True	
 		
+
+		
+
 
