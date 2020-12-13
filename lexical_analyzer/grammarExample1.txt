@@ -1,0 +1,7 @@
+ E-> T Ep;
+ Ep-> \| T Ep| epsilon;
+ T-> C Tp;
+ Tp-> \& C Tp| epsilon;
+ C-> F Cp;
+ Cp-> \+ Cp| \* Cp| \? Cp| epsilon;
+ F-> \( E \)| \[ SIMB \- SIMB \]| SIMB;

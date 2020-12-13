@@ -3,7 +3,6 @@ from Lexic import Lexic
 
 class SyntaxRE:
 
-    numEdo = 0
     numAutomata = 0
     
     #clases léxicas
@@ -20,8 +19,9 @@ class SyntaxRE:
     GUION = 100
     SIMB = 110
 
-    def __init__(self, table, string):
+    def __init__(self, table, string, numEdo):
         self.lexic = Lexic(table, string)
+        self.numEdo = numEdo
 
     def ini(self):
         afn = None
@@ -30,7 +30,7 @@ class SyntaxRE:
         if boolean:
             token = self.lexic.yylex()
             if token == self.FIN:
-                return True, afn
+                return True, afn, self.numEdo
         return False, afn
 
     #E -> TE'
@@ -58,7 +58,7 @@ class SyntaxRE:
                     return True, afn
             return False, afn
         
-        self.lexic.returnToken()
+        self.lexic.rewindToken()
         return True, afn
     
     #T -> CT'
@@ -85,7 +85,7 @@ class SyntaxRE:
                     return True, afn
             return False, afn
         
-        self.lexic.returnToken()
+        self.lexic.rewindToken()
         return True, afn
     
     #C -> FC'
@@ -126,7 +126,7 @@ class SyntaxRE:
                 return True, afn
             return False, afn
         
-        self.lexic.returnToken()
+        self.lexic.rewindToken()
         return True, afn
 
     #F -> (E) | [SIMB-SIMB] | SIMB

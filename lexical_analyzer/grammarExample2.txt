@@ -1,0 +1,10 @@
+ G-> Reglas;
+ Reglas-> Regla \; Reglas\_p;
+ Reglas\_p-> Regla \; Reglas\_p| epsilon;
+ Regla-> Lado\_Izq \-\> Lados\_Derechos;
+ Lado\_Izq-> SIMBOLO;
+ Lados\_Derechos-> Lado\_Derecho Lados\_Derechos\_p;
+ Lados\_Derechos\_p-> \| Lado\_Derecho Lados\_Derechos\_p| epsilon;
+ Lado\_Derecho-> ListaSimbolos;
+ ListaSimbolos-> SIMBOLO ListaSimbolos\_p;
+ ListaSimbolos\_p-> SIMBOLO ListaSimbolos\_p| epsilon;

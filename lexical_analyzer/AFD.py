@@ -103,7 +103,7 @@ class AFD:
         f.view(tempfile.mktemp())
     
     def table_to_file(self):
-        with open('afd'+self.id_+'_table.json', 'w') as table_json:
+        with open('afd'+str(self.id_)+'_table.json', 'w') as table_json:
             json.dump(self.table, table_json, indent=2)
 
 

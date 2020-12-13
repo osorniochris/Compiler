@@ -359,7 +359,7 @@ while opc1 != 10:
 			ident = input()
 
 			# convertir afn
-			afd = afns[afn].to_afd(ident, stateNum)
+			afd = afns[afn].to_afd(ident)
 
 			# agregar el afd resultante a la lista
 			afds.append(afd)

@@ -1,100 +1,101 @@
-#Equipo: Barajas Pérez Rafael Sahid, Osornio Sánchez Christopher, Sánchez Peña Axel
-#Grupo: 3CM6
-
 from Lexic import Lexic
+import Tokens
 class SyntaxGrammar: 
+
 	def __init__(self, table, string):
-		self.table = table
-		self.strinG = strinG
+		self.lexic = Lexic(table, string)
 		self.arregloListas = [] 
 		self.simbTemp = []
+		self.simbNoTer = set()
 
 	def ini(self):
-		if G():
-			token = Lexic.yylex()
-			if token == FIN : 
+		if self.G():
+			token = self.lexic.yylex()
+			if token == Tokens.FIN : 
 				return True
-		return False		
+		return False, None		
 
 	def	G(self):
-		if Reglas():
+		if self.Reglas():
 			return True
 		return False
 	
 	def Reglas(self):
-		if Regla():
-			token = Lexic.yylex()
-			if token == PYC:
-				if Reglas_P():
+		if self.Regla():
+			token = self.lexic.yylex()
+			if token == Tokens.PYC:
+				if self.Reglas_P():
 					return True
 		return False
 		
 	def Reglas_P(self):
-		estado = Lexic.getEstado()
-		if Regla():
-			token = Lexic.yylex()
-			if token == PYC:
-				if Reglas_P():
+		state = self.lexic.getState()
+		if self.Regla():
+			token = self.lexic.yylex()
+			if token == Tokens.PYC:
+				if self.Reglas_P():
 					return True
 			return False
-		Lexic.setEstado(estado)	
+		self.lexic.setState(state)	
+		return True
 	
 	def Regla(self):
-		if Lado_Izq():
-			text = Lexic.yytext()
-			token = Lexic.yylex()
-			if token == FLECHA:
-				if LadosDerechos(text):
+		if self.Lado_Izq():
+			text = self.lexic.yytext
+			token = self.lexic.yylex()
+			if token == Tokens.FLECHA:
+				if self.LadosDerechos(text):
 					return True
 		return False												
 
 	def Lado_Izq(self):
-		token = Lexic.yylex()
-		if token == SIMB:
+		token = self.lexic.yylex()
+		if token == Tokens.SIMB:
 			return True
 		return False
 		
 	def LadosDerechos(self, simbIzq):
-		if Lado_Der(simbIzq):
-			if LadosDerechos_p(simbIzq):
+		if self.Lado_Der(simbIzq):
+			if self.LadosDerechos_p(simbIzq):
 				return True
 		return False					
 
 	def LadosDerechos_p(self, simbIzq):
-		token = Lexic.yylex()
-		if token == OR:
-			if Lado_Der(simbIzq):
-				if LadosDerechos_p(simbIzq):
+		token = self.lexic.yylex()
+		if token == Tokens.OR:
+			if self.Lado_Der(simbIzq):
+				if self.LadosDerechos_p(simbIzq):
 					return True
 			return False
 		
-		Lexic.regresarToken()
+		self.lexic.rewindToken()
 		return True	
 		
 	def Lado_Der(self, simbIzq):
 		self.simbTemp = []
-		if ListaSimb():
+		if self.ListaSimb():
+			self.simbNoTer.add(simbIzq)
 			self.arregloListas.append([simbIzq, self.simbTemp])
 			return True
 		return False
 		
 	def ListaSimb(self):
-		token = Lexic.yylex()
-		if token == SIMB:
-			self.simbTemp.append([Lexic.yytext(),False])
-			if ListaSimb_p():
+		token = self.lexic.yylex()
+		if token == Tokens.SIMB:
+			self.simbTemp.append([self.lexic.yytext,False])
+			if self.ListaSimb_p():
 				return True
 		return False
 		
 	def ListaSimb_p(self):
-		token = Lexic.yylex()
-		if token == SIMB:
-			self.simbTemp.append([Lexic.yytext(),False])
-			if ListaSimb_p():
+		token = self.lexic.yylex()
+		if token == Tokens.SIMB:
+			self.simbTemp.append([self.lexic.yytext,False])
+			if self.ListaSimb_p():
 				return True
 			return False
 
-		Lexic.regresarToken()
+		self.lexic.rewindToken()
 		return True	
 		
 

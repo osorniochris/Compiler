@@ -34,7 +34,7 @@ class Lexic:
 				#Si este es un estado de aceptacion
 				if self.table[str(m)]["token"] != -1:
 					#Se mueve el Lexema
-					self.finlexema += 1
+					self.finlexema = self.caracterActual - 1
 					#Se cambia la bandera a True
 					self.flag_accept_state = True
 					#Se cambia el valor del token nuevo
@@ -45,21 +45,36 @@ class Lexic:
 				if self.flag_accept_state:
 					#Si si se habia visitado se regresa el token del edo y el lexema
 					self.yytext = self.stringAn[self.inilexema:self.finlexema+1]
-					if self.yytext.find("\\") != -1:
-						self.yytext.replace("\\", "")
+					if self.yytext.find("\\\\") != -1:
+						self.yytext = self.yytext.replace("\\", "", 1)
+					else:
+						if self.yytext.find("\\") != -1:
+							self.yytext = self.yytext.replace("\\", "")
 					self.caracterActual = self.finlexema + 1
 					self.inilexema = self.caracterActual
 					self.finlexema = self.inilexema - 1
 					return tokenAct	
 				else:
 					#Regresa error
-					return -1	
+					return -1
+		self.yytext = self.stringAn[self.inilexema:self.finlexema+1]
+		if self.yytext.find("\\\\") != -1:
+			self.yytext = self.yytext.replace("\\", "", 1)
+		else:
+			if self.yytext.find("\\") != -1:
+				self.yytext = self.yytext.replace("\\", "")
 		return tokenAct
 
 	#def yytext(self):
 	#	return self.stringAn[self.inilexema:self.finlexema+1]
 	
-	def returnToken(self):
+	def rewindToken(self):
 		self.caracterActual = self.index.pop()
 		self.inilexema = self.caracterActual
 		self.finlexema = self.inilexema - 1
+	
+	def getState(self):
+		return self.inilexema, self.finlexema, self.caracterActual, self.index, self.currentState, self.flag_accept_state, self.yytext
+
+	def setState(self, state):
+		self.inilexema, self.finlexema, self.caracterActual, self.index, self.currentState, self.flag_accept_state, self.yytext = state

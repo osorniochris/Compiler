@@ -18,6 +18,8 @@ class AFN:
         for s in self.states:
             if s.is_accept_state:
                 s.token = token
+        for s in self.accept_states:
+            s.token = token
     
     @staticmethod
     def create_basic(current_state_id, current_afn_id, token, char1, char2):
@@ -255,7 +257,7 @@ class AFN:
         R = AFN.epsilon_closure(AFN.move(c, states))
         return R
 
-    def to_afd(self, id_afd, current_state_id):
+    def to_afd(self, id_afd):
         R = set()
         checked = []
 

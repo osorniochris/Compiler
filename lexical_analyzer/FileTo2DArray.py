@@ -7,6 +7,6 @@ def fileTo2DArray(file_path):
 	file_lines = file.readlines()
 
 	for line in file_lines:
-		array.append(line.split())
+		array.append(line.split('  '))
 
 	return array
