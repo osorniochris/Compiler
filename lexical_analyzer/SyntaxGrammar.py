@@ -82,7 +82,7 @@ class SyntaxGrammar:
 	def ListaSimb(self):
 		token = self.lexic.yylex()
 		if token == Tokens.SIMB:
-			self.simbTemp.append([self.lexic.yytext,False])
+			self.simbTemp.append([self.lexic.yytext, True])
 			if self.ListaSimb_p():
 				return True
 		return False
@@ -90,7 +90,7 @@ class SyntaxGrammar:
 	def ListaSimb_p(self):
 		token = self.lexic.yylex()
 		if token == Tokens.SIMB:
-			self.simbTemp.append([self.lexic.yytext,False])
+			self.simbTemp.append([self.lexic.yytext, True])
 			if self.ListaSimb_p():
 				return True
 			return False
