@@ -1,23 +1,35 @@
 class LL1:
 
-
 	def __init__(self, arregloListas, simbNoTerm):
 		self.arregloListas = arregloListas
 		self.simbNoTerm = simbNoTerm
-
+		self.arregloListas = self.validarNoTer()
+		#for i in range(len(self.arregloListas)):
+			#print(self.arregloListas[i])
+		
+	def validarNoTer(self):
+		aux = self.arregloListas
+		#print(self.simbNoTerm)
+		for i in range(len(self.simbNoTerm)):
+			for j in range(len(aux)):
+				for k in range(len(aux[j][1])):
+					if self.simbNoTerm[i] == ((aux[j][1])[k])[0]:
+						((aux[j][1])[k])[1] = False
+		return aux							
 
 	def First(self, l):
-		print(l)
-		r = set()
-		aux = l
-		if aux[0][1] or aux[0][0] == 'epsilon':
-			r.add(aux[0][0])
+		r = []
+		if l[0][1] or l[0][0] == 'epsilon':
+			r.append(l[0][0])
 			return r
-		for i in range(len(aux)):
-			if self.arregloListas[i][0] == aux[i][0]:
-				c = First(arregloListas[i])
-				if 'epsilon' in c and (i+1) < len(aux):
-					c.remove('epsilon')
-					c.union(First(aux[i+1]))
-			r.union(c)		
+			
+		for i in range(len(l)):
+			for j in range(len(self.arregloListas)):
+				if str(l[i][0]) == str(self.arregloListas[j][0]):
+					c = []
+					c = self.First(self.arregloListas[j][1])
+					if ' epsilon' in c and l[i+1] != None:
+						c.remove(' epsilon')
+						c.append(self.First(l[i+1]))
+					r.append(c)
 		return r		
