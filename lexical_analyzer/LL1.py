@@ -19,18 +19,18 @@ class LL1:
 
 	def First(self, l):
 		aux = l
-		r = list()
+		r = set()
 		if aux[0][1] or aux[0][0] == "{' epsilon'}":
-			r.append(str(aux[0][0]))
-			return set(r)
-			
+			r.add(aux[0][0])	
+			return set(r)	
+		
 		for i in range(len(self.arregloListas)):
 			if str(aux[0][0]) == str(self.arregloListas[i][0]):
-				r.append(str(self.First(self.arregloListas[i][1])))
-
+				r.update(self.First(self.arregloListas[i][1]))
+				
 		if "{' epsilon'}" in r and len(aux) != 1:
 			r.remove("{' epsilon'}")
-			r.append(str(self.First(aux[1])))
+			r.update(self.First(aux[1]))
 			return set(r)
 				
-		return set(r)		
+		return r		
