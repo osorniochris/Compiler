@@ -4,4 +4,4 @@
  Tp-> \& C Tp| epsilon;
  C-> F Cp;
  Cp-> \+ Cp| \* Cp| \? Cp| epsilon;
- F-> \( E \)| \[ SIMB \- SIMB \]| SIMB;
+ F-> \( E \)| SIMB;

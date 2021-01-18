@@ -1,6 +1,7 @@
 from SyntaxGrammar import SyntaxGrammar
 import json
 from Lexic import Lexic
+from LL1 import LL1
 
 def read_file(file_path):
     file = open(file_path, 'r')
@@ -23,11 +24,11 @@ gramatica = read_file(r"C:\Users\chistopher\OneDrive - Instituto Politecnico Nac
 syntax = SyntaxGrammar(table, gramatica)
 
 ok = syntax.ini()
-
 print(ok)
-print("Símbolos no terminales")
-for simb in syntax.simbNoTer:
-    print(simb)
-print('\nArreglo de Listas')
-for regla in syntax.arregloListas:
+
+ll1 = LL1(syntax.arregloListas, syntax.simbNoTer)
+
+for regla in ll1.arregloListas:
     print(regla)
+
+print(ll1.Follow(' Cp'))
