@@ -4,6 +4,10 @@ class LL1:
 		self.arregloListas = arregloListas
 		self.simbNoTerm = simbNoTerm
 		self.arregloListas = self.validarNoTer()
+		self.simbTerm = set()
+		self.obtainSimbTerm()
+		self.table = {}
+		self.buildTable()
 		
 	def validarNoTer(self):
 		aux = self.arregloListas
@@ -71,4 +75,56 @@ class LL1:
 				aux = self.arregloListas[i][1][j:]
 		
 		return aux
+
+	def obtainSimbTerm(self):
+		for regla in self.arregloListas:
+			for simb in self.First(regla[1]):
+				self.simbTerm.add(simb)
+
+			for simb in self.Follow(regla[0]):
+				self.simbTerm.add(simb)
+
+		self.simbTerm.remove(' epsilon')
+
+	def buildTable(self):
+		#Se llena el diccionario (tabla) con 'Error'
+		for simbN in self.simbNoTerm:
+			self.table[simbN] = {}
+			for simb in self.simbTerm:
+				self.table[simbN][simb] = 'Error'
+
+		#Se agrega el símbolo $ como fila
+		self.table[' $'] = {}
+		for simb in self.simbTerm:
+				self.table[' $'][simb] = 'Error'
+
+		#La cordenada [$, $] es Aceptar
+		self.table[' $'][' $'] = 'Accept'
+
+		#Por cada regla
+		numRegla = -1
+		for regla in self.arregloListas:
+			numRegla += 1
+
+			#Se obtiene el first de la regla
+			cols = self.First(regla[1])
+
+			#Si el first dió epsilon hacemos follow
+			if ' epsilon' in cols:
+				cols = self.Follow(regla[0])
+
+			#Se obtienen únicamente los caracteres de la regla
+			ruleFormatted = ''
+			for x in regla[1]:
+				ruleFormatted = ruleFormatted + x[0]
+			ruleFormatted = ruleFormatted.replace(' ', '')
+
+			#Se hace el par a insertar en la tabla
+			par = []
+			par.append(ruleFormatted)
+			par.append(numRegla)
+
+			#Se inserta el par en las columnas correspondientes
+			for col in cols:
+				self.table[regla[0]][col] = par
 
