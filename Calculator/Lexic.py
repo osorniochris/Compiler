@@ -53,6 +53,7 @@ class Lexic:
 					self.caracterActual = self.finlexema + 1
 					self.inilexema = self.caracterActual
 					self.finlexema = self.inilexema - 1
+					print(tokenAct)
 					return tokenAct	
 				else:
 					#Regresa error
@@ -63,6 +64,8 @@ class Lexic:
 		else:
 			if self.yytext.find("\\") != -1:
 				self.yytext = self.yytext.replace("\\", "")
+				
+		print(tokenAct)
 		return tokenAct
 
 	#def yytext(self):

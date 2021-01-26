@@ -44,3 +44,8 @@ for x in ll1.table:
 	for y in ll1.table[x]:
 		print(ll1.table[x][y], end='\t')
 	print('')
+
+
+with open('LL1_table.json', 'w') as table_json:
+	json.dump(ll1.table, table_json, indent=2)
+

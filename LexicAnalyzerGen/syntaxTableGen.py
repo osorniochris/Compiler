@@ -22,10 +22,6 @@ for a in afns:
     print(ok)
 
 union = AFN.union_to_afd(list_of_afns, 100, 1)
-union.show()
+#union.show()
 afd = union.to_afd(1)
-
-
-
-
 

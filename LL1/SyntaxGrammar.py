@@ -1,4 +1,5 @@
 from Lexic import Lexic
+
 class Tokens:
 	#clases léxicas
 	FIN = 0
@@ -13,7 +14,7 @@ class SyntaxGrammar:
 		self.lexic = Lexic(table, string)
 		self.arregloListas = [] 
 		self.simbTemp = []
-		self.simbNoTer = set()
+		self.simbNoTer = []
 
 	def ini(self):
 		if self.G():
@@ -81,7 +82,8 @@ class SyntaxGrammar:
 	def Lado_Der(self, simbIzq):
 		self.simbTemp = []
 		if self.ListaSimb():
-			self.simbNoTer.add(simbIzq)
+			if simbIzq not in self.simbNoTer:
+				self.simbNoTer.append(simbIzq)
 			self.arregloListas.append([simbIzq, self.simbTemp])
 			return True
 		return False

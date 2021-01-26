@@ -1,0 +1,225 @@
+{
+  " E": {
+    " $": "Error",
+    " tan": [
+      " T Ep",
+      0
+    ],
+    " sin": [
+      " T Ep",
+      0
+    ],
+    " +": "Error",
+    " (": [
+      " T Ep",
+      0
+    ],
+    " cos": [
+      " T Ep",
+      0
+    ],
+    " -": "Error",
+    " *": "Error",
+    " ^": "Error",
+    " num": [
+      " T Ep",
+      0
+    ],
+    " /": "Error",
+    " )": "Error"
+  },
+  " Ep": {
+    " $": [
+      " epsilon",
+      3
+    ],
+    " tan": "Error",
+    " sin": "Error",
+    " +": [
+      " + T Ep",
+      1
+    ],
+    " (": "Error",
+    " cos": "Error",
+    " -": [
+      " - T Ep",
+      2
+    ],
+    " *": "Error",
+    " ^": "Error",
+    " num": "Error",
+    " /": "Error",
+    " )": [
+      " epsilon",
+      3
+    ]
+  },
+  " T": {
+    " $": "Error",
+    " tan": [
+      " P Tp",
+      4
+    ],
+    " sin": [
+      " P Tp",
+      4
+    ],
+    " +": "Error",
+    " (": [
+      " P Tp",
+      4
+    ],
+    " cos": [
+      " P Tp",
+      4
+    ],
+    " -": "Error",
+    " *": "Error",
+    " ^": "Error",
+    " num": [
+      " P Tp",
+      4
+    ],
+    " /": "Error",
+    " )": "Error"
+  },
+  " Tp": {
+    " $": [
+      " epsilon",
+      7
+    ],
+    " tan": "Error",
+    " sin": "Error",
+    " +": [
+      " epsilon",
+      7
+    ],
+    " (": "Error",
+    " cos": "Error",
+    " -": [
+      " epsilon",
+      7
+    ],
+    " *": [
+      " * P Tp",
+      5
+    ],
+    " ^": "Error",
+    " num": "Error",
+    " /": [
+      " / P Tp",
+      6
+    ],
+    " )": [
+      " epsilon",
+      7
+    ]
+  },
+  " P": {
+    " $": "Error",
+    " tan": [
+      " F Pp",
+      8
+    ],
+    " sin": [
+      " F Pp",
+      8
+    ],
+    " +": "Error",
+    " (": [
+      " F Pp",
+      8
+    ],
+    " cos": [
+      " F Pp",
+      8
+    ],
+    " -": "Error",
+    " *": "Error",
+    " ^": "Error",
+    " num": [
+      " F Pp",
+      8
+    ],
+    " /": "Error",
+    " )": "Error"
+  },
+  " Pp": {
+    " $": [
+      " epsilon",
+      10
+    ],
+    " tan": "Error",
+    " sin": "Error",
+    " +": [
+      " epsilon",
+      10
+    ],
+    " (": "Error",
+    " cos": "Error",
+    " -": [
+      " epsilon",
+      10
+    ],
+    " *": [
+      " epsilon",
+      10
+    ],
+    " ^": [
+      " ^ F Pp",
+      9
+    ],
+    " num": "Error",
+    " /": [
+      " epsilon",
+      10
+    ],
+    " )": [
+      " epsilon",
+      10
+    ]
+  },
+  " F": {
+    " $": "Error",
+    " tan": [
+      " tan ( E )",
+      14
+    ],
+    " sin": [
+      " sin ( E )",
+      12
+    ],
+    " +": "Error",
+    " (": [
+      " ( E )",
+      11
+    ],
+    " cos": [
+      " cos ( E )",
+      13
+    ],
+    " -": "Error",
+    " *": "Error",
+    " ^": "Error",
+    " num": [
+      " num",
+      15
+    ],
+    " /": "Error",
+    " )": "Error"
+  },
+  " $": {
+    " $": "Accept",
+    " tan": "Error",
+    " sin": "Error",
+    " +": "Error",
+    " (": "Error",
+    " cos": "Error",
+    " -": "Error",
+    " *": "Error",
+    " ^": "Error",
+    " num": "Error",
+    " /": "Error",
+    " )": "Error"
+  }
+}

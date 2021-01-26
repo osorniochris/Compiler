@@ -117,7 +117,7 @@ class LL1:
 			ruleFormatted = ''
 			for x in regla[1]:
 				ruleFormatted = ruleFormatted + x[0]
-			ruleFormatted = ruleFormatted.replace(' ', '')
+			#ruleFormatted = ruleFormatted.replace(' ', '')
 
 			#Se hace el par a insertar en la tabla
 			par = []
