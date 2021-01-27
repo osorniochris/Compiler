@@ -18,10 +18,11 @@ for a in afns:
     ok, afn, id_ = syntax.ini()
     afn.set_token(int(a[1]))
     list_of_afns.append(afn)
+    
 
     print(ok)
 
 union = AFN.union_to_afd(list_of_afns, 100, 1)
-#union.show()
+union.show()
 afd = union.to_afd(1)
 

@@ -1,111 +1,89 @@
 {
   " E": {
-    " $": "Error",
+    " /": "Error",
+    " )": "Error",
+    " ^": "Error",
     " tan": [
       " T Ep",
       0
     ],
-    " sin": [
-      " T Ep",
-      0
-    ],
-    " +": "Error",
     " (": [
       " T Ep",
       0
     ],
-    " cos": [
-      " T Ep",
-      0
-    ],
-    " -": "Error",
+    " $": "Error",
     " *": "Error",
-    " ^": "Error",
     " num": [
       " T Ep",
       0
     ],
-    " /": "Error",
-    " )": "Error"
+    " +": "Error",
+    " sin": [
+      " T Ep",
+      0
+    ],
+    " -": "Error",
+    " cos": [
+      " T Ep",
+      0
+    ]
   },
   " Ep": {
-    " $": [
-      " epsilon",
-      3
-    ],
-    " tan": "Error",
-    " sin": "Error",
-    " +": [
-      " + T Ep",
-      1
-    ],
-    " (": "Error",
-    " cos": "Error",
-    " -": [
-      " - T Ep",
-      2
-    ],
-    " *": "Error",
-    " ^": "Error",
-    " num": "Error",
     " /": "Error",
     " )": [
       " epsilon",
       3
-    ]
+    ],
+    " ^": "Error",
+    " tan": "Error",
+    " (": "Error",
+    " $": [
+      " epsilon",
+      3
+    ],
+    " *": "Error",
+    " num": "Error",
+    " +": [
+      " + T Ep",
+      1
+    ],
+    " sin": "Error",
+    " -": [
+      " - T Ep",
+      2
+    ],
+    " cos": "Error"
   },
   " T": {
-    " $": "Error",
+    " /": "Error",
+    " )": "Error",
+    " ^": "Error",
     " tan": [
       " P Tp",
       4
     ],
-    " sin": [
-      " P Tp",
-      4
-    ],
-    " +": "Error",
     " (": [
       " P Tp",
       4
     ],
-    " cos": [
-      " P Tp",
-      4
-    ],
-    " -": "Error",
+    " $": "Error",
     " *": "Error",
-    " ^": "Error",
     " num": [
       " P Tp",
       4
     ],
-    " /": "Error",
-    " )": "Error"
+    " +": "Error",
+    " sin": [
+      " P Tp",
+      4
+    ],
+    " -": "Error",
+    " cos": [
+      " P Tp",
+      4
+    ]
   },
   " Tp": {
-    " $": [
-      " epsilon",
-      7
-    ],
-    " tan": "Error",
-    " sin": "Error",
-    " +": [
-      " epsilon",
-      7
-    ],
-    " (": "Error",
-    " cos": "Error",
-    " -": [
-      " epsilon",
-      7
-    ],
-    " *": [
-      " * P Tp",
-      5
-    ],
-    " ^": "Error",
-    " num": "Error",
     " /": [
       " / P Tp",
       6
@@ -113,63 +91,60 @@
     " )": [
       " epsilon",
       7
-    ]
+    ],
+    " ^": "Error",
+    " tan": "Error",
+    " (": "Error",
+    " $": [
+      " epsilon",
+      7
+    ],
+    " *": [
+      " * P Tp",
+      5
+    ],
+    " num": "Error",
+    " +": [
+      " epsilon",
+      7
+    ],
+    " sin": "Error",
+    " -": [
+      " epsilon",
+      7
+    ],
+    " cos": "Error"
   },
   " P": {
-    " $": "Error",
+    " /": "Error",
+    " )": "Error",
+    " ^": "Error",
     " tan": [
       " F Pp",
       8
     ],
-    " sin": [
-      " F Pp",
-      8
-    ],
-    " +": "Error",
     " (": [
       " F Pp",
       8
     ],
-    " cos": [
-      " F Pp",
-      8
-    ],
-    " -": "Error",
+    " $": "Error",
     " *": "Error",
-    " ^": "Error",
     " num": [
       " F Pp",
       8
     ],
-    " /": "Error",
-    " )": "Error"
+    " +": "Error",
+    " sin": [
+      " F Pp",
+      8
+    ],
+    " -": "Error",
+    " cos": [
+      " F Pp",
+      8
+    ]
   },
   " Pp": {
-    " $": [
-      " epsilon",
-      10
-    ],
-    " tan": "Error",
-    " sin": "Error",
-    " +": [
-      " epsilon",
-      10
-    ],
-    " (": "Error",
-    " cos": "Error",
-    " -": [
-      " epsilon",
-      10
-    ],
-    " *": [
-      " epsilon",
-      10
-    ],
-    " ^": [
-      " ^ F Pp",
-      9
-    ],
-    " num": "Error",
     " /": [
       " epsilon",
       10
@@ -177,49 +152,74 @@
     " )": [
       " epsilon",
       10
-    ]
+    ],
+    " ^": [
+      " ^ F Pp",
+      9
+    ],
+    " tan": "Error",
+    " (": "Error",
+    " $": [
+      " epsilon",
+      10
+    ],
+    " *": [
+      " epsilon",
+      10
+    ],
+    " num": "Error",
+    " +": [
+      " epsilon",
+      10
+    ],
+    " sin": "Error",
+    " -": [
+      " epsilon",
+      10
+    ],
+    " cos": "Error"
   },
   " F": {
-    " $": "Error",
+    " /": "Error",
+    " )": "Error",
+    " ^": "Error",
     " tan": [
       " tan ( E )",
       14
     ],
-    " sin": [
-      " sin ( E )",
-      12
-    ],
-    " +": "Error",
     " (": [
       " ( E )",
       11
     ],
-    " cos": [
-      " cos ( E )",
-      13
-    ],
-    " -": "Error",
+    " $": "Error",
     " *": "Error",
-    " ^": "Error",
     " num": [
       " num",
       15
     ],
-    " /": "Error",
-    " )": "Error"
+    " +": "Error",
+    " sin": [
+      " sin ( E )",
+      12
+    ],
+    " -": "Error",
+    " cos": [
+      " cos ( E )",
+      13
+    ]
   },
   " $": {
-    " $": "Accept",
-    " tan": "Error",
-    " sin": "Error",
-    " +": "Error",
-    " (": "Error",
-    " cos": "Error",
-    " -": "Error",
-    " *": "Error",
-    " ^": "Error",
-    " num": "Error",
     " /": "Error",
-    " )": "Error"
+    " )": "Error",
+    " ^": "Error",
+    " tan": "Error",
+    " (": "Error",
+    " $": "Accept",
+    " *": "Error",
+    " num": "Error",
+    " +": "Error",
+    " sin": "Error",
+    " -": "Error",
+    " cos": "Error"
   }
 }

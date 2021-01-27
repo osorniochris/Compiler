@@ -285,7 +285,7 @@ class AFN:
                                 sn = Subset(r_.id_, r_.states)
                         if r.states == states:
                             exists = True
-                            sn = Subset(r.id_, r_.states)
+                            sn = Subset(r.id_, r.states)
                         
                         if not exists:
                             sn = Subset(i, states)
